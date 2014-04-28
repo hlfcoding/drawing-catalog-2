@@ -17,7 +17,7 @@ def setup():
         position={'x': 0, 'y': -50},
         # Rainbow skin.
         skin={
-            'fill': lambda: color((yinForce.theta(yin) * 30) % 255, 200, 200),
+            'fill': lambda: color((yinForce.theta(yin) * 10) % 255, 200, 200),
             'stroke': None
         }
         # Plain skin.
@@ -32,7 +32,7 @@ def setup():
         position={'x': 0, 'y': 50},
         # Rainbow skin.
         skin={
-            'fill': lambda: color((yangForce.theta(yang) * 30) % 255, 200, 200),
+            'fill': lambda: color((yangForce.theta(yang) * 10 + 50) % 255, 200, 200),
             'stroke': None
         }
         # Plain skin.
