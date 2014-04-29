@@ -1,4 +1,4 @@
-from elements import *
+from core_elements import *
 from forces import *
 from arrangements import *
 
