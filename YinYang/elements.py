@@ -43,8 +43,12 @@ class Element(object):
         for force in self.forces:
             force.apply(self)
 
-    def log(self, value):
-        output = 'element \'{0}\': {1}'.format(self.name, value)
+    def log(self, value, label=None):
+        output = 'element \'{0}\': {1} {2}'.format(
+            self.name,
+            value,
+            '({})'.format(label) if label is not None else ''
+        )
         println(output)
 
 

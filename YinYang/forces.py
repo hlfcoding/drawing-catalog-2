@@ -18,3 +18,10 @@ class SwirlingForce(object):
         y = self.radius * sin(t)
         element.position.set(x, y)
 
+    def log(self, value, label=None):
+        output = 'swirling force: {0} {1}'.format(
+            value,
+            '({})'.format(label) if label is not None else ''
+        )
+        println(output)
+
