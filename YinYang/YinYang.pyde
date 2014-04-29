@@ -88,7 +88,7 @@ def createChildElements(count):
 
     for i in range(count):
         # Plain skin.
-        # if (count == 2):
+        # if count == 2:
         #    fillColor = 0 if (i == 0) else 255
         element = Element(
             name='element {}'.format(i + 1),
