@@ -6,9 +6,9 @@ shouldLoop = True
 
 
 def setup():
-    size(300, 300, P2D)
     colorMode(HSB)
     global el
+    size(300, 300)
     el = ContainerElement(
         name='yinyang',
         size={'width': 200, 'height': 200}
