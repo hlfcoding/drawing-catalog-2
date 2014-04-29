@@ -2,6 +2,7 @@ from elements import *
 from forces import *
 
 el = None
+shouldLoop = True
 
 
 def setup():
@@ -53,4 +54,13 @@ def draw():
     el.update()
     el.draw()
     popMatrix()
+
+
+def mousePressed():
+    global shouldLoop
+    shouldLoop = not shouldLoop
+    if shouldLoop:
+        loop()
+    else:
+        noLoop()
 
