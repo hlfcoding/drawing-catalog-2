@@ -6,18 +6,22 @@ el = None
 swirl = None
 shouldLoop = True
 
-childCount = 2
+backgroundColor = color(225)
+#childCount = 2
+childCount = 3
 thetaToColorScalar = 5
 thetaToColorRange = 100
 thetaVelocityScalar = 2
+
 
 def setup():
     global el
     global swirl
     size(300, 300)
     colorMode(HSB)
+    background(backgroundColor)
     el = ContainerElement(
-        name='yinyang',
+        name='yinyangyon',
         size={'width': 200, 'height': 200}
     )
     swirl = SwirlingArrangement(el, createChildElements(childCount))
@@ -44,6 +48,7 @@ def mousePressed():
 
 
 def createChildElements(count):
+    global backgroundColor
     elements = []
     thetaToColorOffset = thetaToColorRange / count
 
@@ -55,6 +60,21 @@ def createChildElements(count):
                     ) % 255
         return color(hueValue, 200, 200)
 
+    def drawOutline(element):
+        arcAngularOffset = atan2(element.position.y, element.position.x)
+        arcLengthFactor = 1.13 if count == 3 else 1
+        noFill()
+        element._strokeSize(element.skin['strokeSize'])
+        stroke(backgroundColor)
+        arc(
+            element.position.x,
+            element.position.y,
+            element.width,
+            element.height,
+            0 + arcAngularOffset,
+            arcLengthFactor * PI + arcAngularOffset
+        )
+
     for i in range(count):
         # Plain skin.
         # if (count == 2):
@@ -64,11 +84,13 @@ def createChildElements(count):
             skin={
                 'fill': fillColor,
                 'stroke': None,
-                'strokeSize': 10,
+                'strokeSize': lambda element: element.width / 9,
                 # Custom entries.
                 'thetaToColorOffset': i * thetaToColorOffset
             }
         )
+        if count > 2:
+            element.decorators['before'].append(drawOutline)
         elements.append(element)
     return elements
 

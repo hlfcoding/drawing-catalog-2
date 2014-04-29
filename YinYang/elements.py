@@ -11,8 +11,15 @@ class Element(object):
         self.height = size['height']
         self.skin = skin
         self.forces = {}
+        self.decorators = {
+            'before': [],
+            'after': []
+        }
 
     def draw(self):
+        for decorate in self.decorators['before']:
+            if callable(decorate):
+                decorate(self)
         if self.skin['fill'] is None:
             noFill()
         else:
@@ -29,6 +36,9 @@ class Element(object):
             self.width,
             self.height
         )
+        for decorate in self.decorators['after']:
+            if callable(decorate):
+                decorate(self)
 
     @property
     def radius(self):
