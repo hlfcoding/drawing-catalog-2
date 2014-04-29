@@ -17,12 +17,15 @@ thetaVelocityScalar = 2
 def setup():
     global el
     global swirl
-    size(300, 300)
+    margin = 0.15
+    stageSize = 300
+    elementSize = stageSize * (1 - margin * 2)
+    size(stageSize, stageSize)
     colorMode(HSB)
     background(backgroundColor)
     el = ContainerElement(
         name='yinyangyon',
-        size={'width': 200, 'height': 200}
+        size={'width': elementSize, 'height': elementSize}
     )
     swirl = SwirlingArrangement(el, createChildElements(childCount))
     for element in el.childElements:
