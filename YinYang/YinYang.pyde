@@ -1,50 +1,28 @@
 from elements import *
 from forces import *
+from arrangements import *
 
 el = None
+swirl = None
 shouldLoop = True
 
+childCount = 2
+thetaToColorScalar = 5
+thetaToColorRange = 100
+thetaVelocityScalar = 2
 
 def setup():
-    colorMode(HSB)
     global el
+    global swirl
     size(300, 300)
+    colorMode(HSB)
     el = ContainerElement(
         name='yinyang',
         size={'width': 200, 'height': 200}
     )
-    yin = Element(
-        name='yin',
-        position={'x': 0, 'y': -50},
-        # Rainbow skin.
-        skin={
-            'fill': lambda: color((yinForce.theta(yin) * 10) % 255, 200, 200),
-            'stroke': None
-        }
-        # Plain skin.
-        #skin={'fill': 0, 'stroke': None}
-    )
-    yinForce = SwirlingForce(
-        radius=50
-    )
-    yin.forces.append(yinForce)
-    yang = Element(
-        name='yang',
-        position={'x': 0, 'y': 50},
-        # Rainbow skin.
-        skin={
-            'fill': lambda: color((yangForce.theta(yang) * 10 + 50) % 255, 200, 200),
-            'stroke': None
-        }
-        # Plain skin.
-        #skin={'fill': 255, 'stroke': None}
-    )
-    yangForce = SwirlingForce(
-        offset=PI,
-        radius=50
-    )
-    yang.forces.append(yangForce)
-    el.children.extend([yin, yang])
+    swirl = SwirlingArrangement(el, createChildElements(childCount))
+    for element in el.childElements:
+        element.forces['swirl'].dampener *= thetaVelocityScalar
 
 
 def draw():
@@ -63,4 +41,34 @@ def mousePressed():
         loop()
     else:
         noLoop()
+
+
+def createChildElements(count):
+    elements = []
+    thetaToColorOffset = thetaToColorRange / count
+
+    # Rainbow skin.
+    def fillColor(element):
+        hueValue = (element.forces['swirl'].theta(element)
+                    * (thetaToColorScalar * count)
+                    + element.skin['thetaToColorOffset']
+                    ) % 255
+        return color(hueValue, 200, 200)
+
+    for i in range(count):
+        # Plain skin.
+        # if (count == 2):
+        #    fillColor = 0 if (i == 0) else 255
+        element = Element(
+            name='element {}'.format(i + 1),
+            skin={
+                'fill': fillColor,
+                'stroke': None,
+                'strokeSize': 10,
+                # Custom entries.
+                'thetaToColorOffset': i * thetaToColorOffset
+            }
+        )
+        elements.append(element)
+    return elements
 

@@ -4,29 +4,24 @@ class Element(object):
                  name='unknown',
                  position={'x': 0, 'y': 0},
                  size={'width': 100, 'height': 100},
-                 skin={'fill': None, 'stroke': None}):
+                 skin={'fill': None, 'stroke': None, 'strokeSize': 1}):
         self.name = name
         self.position = PVector(position['x'], position['y'])
         self.width = size['width']
         self.height = size['height']
         self.skin = skin
-        self.forces = []
+        self.forces = {}
 
     def draw(self):
-        fillColor = self.skin['fill']
-        if fillColor is None:
+        if self.skin['fill'] is None:
             noFill()
         else:
-            if callable(fillColor):
-                fillColor = fillColor()
-            fill(fillColor)
-        strokeColor = self.skin['stroke']
+            self._fill(self.skin['fill'])
         if self.skin['stroke'] is None:
             noStroke()
         else:
-            if callable(strokeColor):
-                strokeColor = strokeColor()
-            stroke(strokeColor)
+            self._stroke(self.skin['stroke'])
+            self._strokeSize(self.skin['strokeSize'])
         ellipseMode(CENTER)
         ellipse(
             self.position.x,
@@ -36,11 +31,23 @@ class Element(object):
         )
 
     @property
+    def radius(self):
+        if self.width != self.height:
+            raise Exception(
+                'Immeasurable element radius. Width and height not the same.'
+            )
+        return self.width / 2
+
+    @radius.setter
+    def radius(self, value):
+        self.width = self.height = value
+
+    @property
     def tick(self):
         return frameCount
 
     def update(self):
-        for force in self.forces:
+        for name, force in self.forces.iteritems():
             force.apply(self)
 
     def log(self, value, label=None):
@@ -51,20 +58,37 @@ class Element(object):
         )
         println(output)
 
+    def _fill(self, fillColor):
+        if callable(fillColor):
+            fillColor = fillColor(self)
+        fill(fillColor)
+        return fillColor
+
+    def _stroke(self, strokeColor):
+        if callable(strokeColor):
+            strokeColor = strokeColor(self)
+        stroke(strokeColor)
+        return strokeColor
+
+    def _strokeSize(self, strokeSize):
+        if callable(strokeSize):
+            strokeSize = strokeSize(self)
+        strokeWeight(strokeSize)
+        return strokeSize
 
 class ContainerElement(Element):
 
     def __init__(self, *args, **kwargs):
         super(ContainerElement, self).__init__(*args, **kwargs)
-        self.children = []
+        self.childElements = []
 
     def draw(self, *args, **kwargs):
         super(ContainerElement, self).draw(*args, **kwargs)
-        for element in self.children:
+        for element in self.childElements:
             element.draw()
 
     def update(self, *args, **kwargs):
         super(ContainerElement, self).update(*args, **kwargs)
-        for element in self.children:
+        for element in self.childElements:
             element.update()
 
