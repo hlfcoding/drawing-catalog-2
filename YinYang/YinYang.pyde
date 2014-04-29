@@ -5,6 +5,7 @@ from arrangements import *
 el = None
 swirl = None
 shouldLoop = True
+shouldExport = False
 
 backgroundColor = color(225)
 #childCount = 2
@@ -17,12 +18,17 @@ thetaVelocityScalar = 2
 def setup():
     global el
     global swirl
+    global thetaVelocityScalar
     margin = 0.15
     stageSize = 300
     elementSize = stageSize * (1 - margin * 2)
     size(stageSize, stageSize)
     colorMode(HSB)
     background(backgroundColor)
+    if shouldExport:
+        fps = 24
+        frameRate(fps)
+        thetaVelocityScalar *= 60 / fps
     el = ContainerElement(
         name='yinyangyon',
         size={'width': elementSize, 'height': elementSize}
@@ -39,6 +45,8 @@ def draw():
     el.update()
     el.draw()
     popMatrix()
+    if shouldExport:
+        saveFrame('frames/frame-####.png')
 
 
 def mousePressed():
