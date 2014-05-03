@@ -58,8 +58,10 @@ def draw():
 
     background(0)
     fill(255)
+    noStroke()
     ellipse(p.x, p.y, s * 2, s * 2)
-
+    stroke(255)
+    line(p.x, p.y, aP.x, aP.y)
 
 def mousePressed():
     global p, s, v
