@@ -22,13 +22,11 @@ def draw():
         background(0)
 
     translate(w/2, h/2)
-    pushMatrix()
     if presentationMode:
         v = 10
         secs = float(millis()) / 1000
         rotate(radians(secs * v % 360))
     drawBranches()
-    popMatrix()
 
 def createSegmentShape(w, h):
     s = createShape()
@@ -43,9 +41,8 @@ def createSegmentShape(w, h):
     s.endShape(CLOSE)
     return s
 
-def drawBranches():
+def drawBranches(n=6):
     shapeMode(CENTER)
-    n = 6
     for i in range(0, n):
         pushMatrix()
         translate(0, -30)
