@@ -27,9 +27,9 @@ def draw():
 
 def createSegmentShape(w, h):
     s = createShape()
+    s.beginShape()
     s.fill(255)
     s.noStroke()
-    s.beginShape()
     s.vertex(0, 0)
     s.vertex(w, 0)
     s.vertex(w, h)
