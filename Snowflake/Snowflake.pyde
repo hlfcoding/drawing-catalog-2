@@ -1,3 +1,5 @@
+presentationMode = True
+
 w = 300
 h = 300
 s1 = None
@@ -16,12 +18,15 @@ def setup():
     s2 = createSegmentShape(s2W, s2H)
 
 def draw():
-    background(0)
+    if presentationMode:
+        background(0)
 
     translate(w/2, h/2)
     pushMatrix()
-    secs = float(millis()) / 1000
-    rotate(radians(secs * 10 % 360))
+    if presentationMode:
+        v = 10
+        secs = float(millis()) / 1000
+        rotate(radians(secs * v % 360))
     drawBranches()
     popMatrix()
 
@@ -29,7 +34,8 @@ def createSegmentShape(w, h):
     s = createShape()
     s.beginShape()
     s.fill(255)
-    s.noStroke()
+    if presentationMode:
+        s.noStroke()
     s.vertex(0, 0)
     s.vertex(w, 0)
     s.vertex(w, h)
