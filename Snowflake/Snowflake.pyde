@@ -2,25 +2,16 @@ presentationMode = True
 
 w = 300
 h = 300
-s0 = None
-s0W = 20
-s0H = 6
-s1 = None
-s1W = 10
-s1H = 30
-s2 = None
-s2W = 5
-s2H = 10
+s = None
+sW = 10
+sH = 30
+sTaper = 0.2
 
 def setup():
     size(w, h)
     
-    global s0
-    global s1
-    global s2
-    s0 = createSegmentShape(s0W, s0H)
-    s1 = createSegmentShape(s1W, s1H)
-    s2 = createSegmentShape(s2W, s2H)
+    global s
+    s = createSegmentShape()
 
 def draw():
     if presentationMode:
@@ -33,17 +24,17 @@ def draw():
         rotate(radians(secs * v % 360))
     drawBranches()
 
-def createSegmentShape(w, h, taper=0.2):
+def createSegmentShape():
     s = createShape()
     s.beginShape()
     s.fill(255)
     if presentationMode:
         s.noStroke()
 
-    s.vertex(w * taper, 0)
-    s.vertex(w * (1-taper), 0)
-    s.vertex(w, h)
-    s.vertex(0, h)
+    s.vertex(sW * sTaper, 0)
+    s.vertex(sW * (1-sTaper), 0)
+    s.vertex(sW, sH)
+    s.vertex(0, sH)
     
     s.endShape(CLOSE)
     return s
@@ -52,10 +43,10 @@ def drawBranches(n=6):
     shapeMode(CENTER)
     for i in range(0, n):
         pushMatrix()
-        translate(0, -13)
-        shape(s0)
+        translate(0, -14)
+        drawBaseSegment()
         translate(0, -17)
-        shape(s1)
+        drawBranchSegment()
         drawSubBranches()
         popMatrix()
         pushMatrix()
@@ -63,22 +54,36 @@ def drawBranches(n=6):
     for i in range(0, n):
         popMatrix()
 
+def drawBaseSegment():
+    pushMatrix()
+    scale(1.8, 0.2)
+    shape(s)
+    popMatrix()
+
+def drawBranchSegment():
+    shape(s)
+
 def drawSubBranches():
+    sX = 0.6
+    sY = 0.5
     t = PI/3
-    x = abs(s2H * sin(degrees(t))) # sin(t) = x/s2H
-    x += s1W/2 * 0.9 # taper
+    x = abs(sH * sY * sin(degrees(t))) # sin(t) = x/sH
+    x += sW/2 * (1-sTaper/2)
+
     pushMatrix()
     translate(x, 0)
-    pushMatrix()
     rotate(PI/3)
-    shape(s2)
-    popMatrix()
+    drawSubBranchSegment(sX, sY)
     popMatrix()
 
     pushMatrix()
     translate(-x, 0)
-    pushMatrix()
     rotate(-PI/3)
-    shape(s2)
+    drawSubBranchSegment(sX, sY)
     popMatrix()
+
+def drawSubBranchSegment(scaleX, scaleY):
+    pushMatrix()
+    scale(scaleX, scaleY)
+    shape(s)
     popMatrix()
