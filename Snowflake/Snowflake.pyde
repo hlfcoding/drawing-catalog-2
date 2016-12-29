@@ -1,3 +1,5 @@
+from animation import *
+
 presentationMode = True
 
 w = 300
@@ -8,10 +10,11 @@ sH = 30
 sTaper = 0.2
 hR = 8  # hole radius
 
-aDuration = 0.3
-aProgress = 0
-aSpeed = 1.0 / (60 * aDuration)
-aStage = 0
+a = Animator()
+a.addSequence('show',
+              [Animation(id='base', duration=0.3),
+               Animation(id='branch', duration=0.3),
+               Animation(id='subBranch', duration=0.3)])
 
 def setup():
     size(w, h)
@@ -30,7 +33,7 @@ def draw():
         rotate(radians(secs * v % 360))
     drawBranches()
 
-    updateAnimationProgress()
+    a.updateSequence('show')
 
 def createSegmentShape():
     s = createShape()
@@ -64,7 +67,7 @@ def drawBranch():
     popMatrix()
 
 def drawBaseSegment():
-    sY = 0.2 * animationStageProgress(0)
+    sY = 0.2 * a.getSequenceAnimation('show', 'base').progress
     h = sH * sY
     y = -(hR + h)
     translate(0, y)
@@ -75,9 +78,11 @@ def drawBaseSegment():
     return y
 
 def drawBranchSegment(y):
-    sY = animationStageProgress(1)
+    sY = a.getSequenceAnimation('show', 'branch').progress
     h = sH * sY
-    translate(0, -(sH + 1) - y + (sH - h) / 2)
+    y = -(sH + 1) - y
+    y += (sH - h) / 2
+    translate(0, y)
     pushMatrix()
     scale(1, sY)
     shape(s)
@@ -85,7 +90,7 @@ def drawBranchSegment(y):
 
 def drawSubBranches():
     sX = 0.6
-    sY = 0.5 * animationStageProgress(2)
+    sY = 0.5 * a.getSequenceAnimation('show', 'subBranch').progress
     t = PI / 3
     x = abs(sH * sY * sin(degrees(t)))  # sin(t) = x/sH
     x += sW / 2 * (1 - sTaper / 2)
@@ -107,27 +112,3 @@ def drawSubBranchSegment(scaleX, scaleY):
     scale(scaleX, scaleY)
     shape(s)
     popMatrix()
-
-def animationStageProgress(stage):
-    if aStage == stage:
-        return aProgress
-    elif aStage > stage:
-        return 1.0
-    else:
-        return 0
-
-def updateAnimationProgress():
-    global aProgress
-    if aProgress >= 1:
-        return
-    aProgress += aSpeed
-    aProgress = min(1, aProgress)
-    updateAnimationStage()
-
-def updateAnimationStage():
-    global aProgress
-    global aStage
-    if aStage >= 3 or aProgress < 1:
-        return
-    aProgress = 0
-    aStage += 1
