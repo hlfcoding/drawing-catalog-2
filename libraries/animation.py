@@ -15,8 +15,9 @@ class Animation(object):
 class Animator(object):
 
     def __init__(self):
-        self.sequences = {}
         self.currentAnimation = None
+        self.isEnabled = True 
+        self.sequences = {}
 
     def addSequence(self, id, animations):
         sequence = {}
@@ -24,10 +25,15 @@ class Animator(object):
         sequence['animations'] = animations
         self.sequences[id] = sequence
 
-    def getSequenceAnimation(self, sid, aid):
-        return next(a for a in self.sequences[sid]['animations'] if a.id == aid)
+    def getSequenceAnimationProgress(self, sid, aid):
+        if not self.isEnabled:
+            return 1.0
+        animation = next(a for a in self.sequences[sid]['animations'] if a.id == aid)
+        return animation.progress
 
     def updateSequence(self, id):
+        if not self.isEnabled:
+            return
         sequence = self.sequences[id]
         animation = sequence['current']
         animations = sequence['animations']

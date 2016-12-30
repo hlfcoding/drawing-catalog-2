@@ -15,6 +15,7 @@ a.addSequence('show',
               [Animation(id='base', duration=0.3),
                Animation(id='branch', duration=0.3),
                Animation(id='subBranch', duration=0.3)])
+a.isEnabled = presentationMode
 
 def setup():
     size(w, h)
@@ -31,6 +32,7 @@ def draw():
         v = 10
         secs = float(millis()) / 1000
         rotate(radians(secs * v % 360))
+
     drawBranches()
 
     a.updateSequence('show')
@@ -67,7 +69,7 @@ def drawBranch():
     popMatrix()
 
 def drawBaseSegment():
-    sY = 0.2 * a.getSequenceAnimation('show', 'base').progress
+    sY = 0.2 * a.getSequenceAnimationProgress('show', 'base')
     h = sH * sY
     y = -(hR + h)
     translate(0, y)
@@ -78,7 +80,7 @@ def drawBaseSegment():
     return y
 
 def drawBranchSegment(y):
-    sY = a.getSequenceAnimation('show', 'branch').progress
+    sY = a.getSequenceAnimationProgress('show', 'branch')
     h = sH * sY
     y = -(sH + 1) - y
     y += (sH - h) / 2
@@ -90,7 +92,7 @@ def drawBranchSegment(y):
 
 def drawSubBranches():
     sX = 0.6
-    sY = 0.5 * a.getSequenceAnimation('show', 'subBranch').progress
+    sY = 0.5 * a.getSequenceAnimationProgress('show', 'subBranch')
     t = PI / 3
     x = abs(sH * sY * sin(degrees(t)))  # sin(t) = x/sH
     x += sW / 2 * (1 - sTaper / 2)
