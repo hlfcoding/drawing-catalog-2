@@ -41,3 +41,7 @@ class Animator(object):
         if animation is animations[-1] or animation.progress < 1:
             return
         sequence['current'] = animations[animations.index(animation) + 1]
+
+def rotatePerSecond(times):
+    seconds = millis() / 1000.0
+    rotate(radians(times * seconds * 360 % 360))

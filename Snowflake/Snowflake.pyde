@@ -29,9 +29,7 @@ def draw():
 
     translate(w / 2, h / 2)
     if presentationMode:
-        v = 10
-        secs = float(millis()) / 1000
-        rotate(radians(secs * v % 360))
+        rotatePerSecond(0.1)
 
     drawBranches()
 
