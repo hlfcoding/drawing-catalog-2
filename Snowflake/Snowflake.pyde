@@ -1,4 +1,5 @@
 from animation import *
+from layout import *
 
 presentationMode = True
 
@@ -19,6 +20,9 @@ def setup():
 
     global s
     s = createSegmentShape()
+    
+    global l
+    l = BranchLayout(shape=s, coreRadius=8)
 
 def draw():
     if presentationMode:
@@ -28,6 +32,7 @@ def draw():
     if presentationMode:
         rotatePerSecond(0.1)
 
+    l.update(animator=a)
     drawBranches()
 
     a.updateSequence('show')
@@ -51,7 +56,6 @@ def createSegmentShape():
     return s
 
 def drawBranches(n=6):
-    shapeMode(CENTER)
     for i in range(0, n):
         drawBranch()
         pushMatrix()
@@ -61,27 +65,16 @@ def drawBranches(n=6):
 
 def drawBranch():
     pushMatrix()
-    drawBranchSegment(drawBaseSegment())
+    
+    translate(*l.base.translation)
+    drawSegment(*l.base.scale)
+    
+    translate(*l.branch.translation)
+    drawSegment(*l.branch.scale)
+    
     drawSubBranches()
+    
     popMatrix()
-
-def drawBaseSegment():
-    coreRadius = 8
-    sX = 1.8
-    sY = 0.2 * a.getSequenceAnimationProgress('show', 'base')
-    h = s.height * sY
-    y = -(coreRadius + h)
-    translate(0, y)
-    drawSegment(sX, sY)
-    return y
-
-def drawBranchSegment(y):
-    sY = a.getSequenceAnimationProgress('show', 'branch')
-    h = s.height * sY
-    y = -(s.height + 1) - y
-    y += (s.height - h) / 2
-    translate(0, y)
-    drawSegment(1, sY)
 
 def drawSubBranches():
     sX = 0.6
