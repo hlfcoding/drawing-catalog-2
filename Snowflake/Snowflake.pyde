@@ -13,6 +13,8 @@ a.addSequence('show',
               [Animation(id='base', duration=0.3),
                Animation(id='branch', duration=0.3),
                Animation(id='subBranch', duration=0.3)])
+a.addSequence('shimmer',
+              [Animation(id='shimmer', duration=1, delay=3, times=sys.maxint)])
 a.isEnabled = presentationMode
 
 def setup():
@@ -36,6 +38,7 @@ def draw():
     l.update(animator=a)
     drawBranches()
 
+    a.updateSequence('shimmer')
     a.updateSequence('show')
 
 def createSegmentShape():
@@ -55,6 +58,14 @@ def createSegmentShape():
     return s
 
 def drawBranches(n=6):
+    if presentationMode:
+        shimmer = a.getSequenceAnimationProgress('shimmer')
+        # 0 + 0 = 0; 0.1 + 0 = 0.1; 0.5 + 0 = 0.5; 0.6 + -0.2 = 0.4; 1 + -1 = 0
+        shimmer += min(0, 0.5 - shimmer) * 2
+        shimmer *= 0.2 
+        fill(1, 0.8 + shimmer)
+        stroke(1, 0.8 + shimmer)
+
     for i in range(0, n):
         drawBranch()
         pushMatrix()
@@ -63,10 +74,6 @@ def drawBranches(n=6):
         popMatrix()
 
 def drawBranch():
-    if presentationMode:
-        fill(1, 0.8)
-        stroke(1, 0.8)
-
     pushMatrix()
 
     translate(*l.base.translation)
