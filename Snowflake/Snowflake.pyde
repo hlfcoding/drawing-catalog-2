@@ -44,9 +44,7 @@ def createSegmentShape():
 
     s = createShape()
     s.beginShape()
-    if presentationMode:
-        s.fill(1, 0.8)
-        s.stroke(1, 0.8)
+    s.disableStyle()
 
     s.vertex(w * sTaper, 0)
     s.vertex(w * (1 - sTaper), 0)
@@ -65,6 +63,10 @@ def drawBranches(n=6):
         popMatrix()
 
 def drawBranch():
+    if presentationMode:
+        fill(1, 0.8)
+        stroke(1, 0.8)
+
     pushMatrix()
 
     translate(*l.base.translation)
