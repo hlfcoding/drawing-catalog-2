@@ -1,14 +1,25 @@
 class Animation(object):
 
-    def __init__(self, id, duration):
+    def __init__(self, id, duration, delay=0, times=1):
         self.fps = 60
         self.id = id
+        self.delay = delay
+        self.delayProgress = self.fps * self.delay
         self.duration = duration
         self.progress = 0
         self.speed = 1.0 / (self.fps * duration)
+        self.times = times
 
     def updateProgress(self):
         if self.progress >= 1.0:
+            self.times -= 1
+            if self.times > 0:
+                self.delayProgress = self.fps * self.delay
+                self.progress = 0
+            else:
+                return
+        if self.delayProgress > 0:
+            self.delayProgress -= 1
             return
         self.progress += self.speed
         self.progress = min(1.0, self.progress)
@@ -26,9 +37,11 @@ class Animator(object):
         sequence['animations'] = animations
         self.sequences[id] = sequence
 
-    def getSequenceAnimationProgress(self, sid, aid):
+    def getSequenceAnimationProgress(self, sid, aid=None):
         if not self.isEnabled:
             return 1.0
+        if aid is None:
+            aid = sid
         animation = next(a for a in self.sequences[sid]['animations'] if a.id == aid)
         return animation.progress
 
