@@ -17,6 +17,7 @@ a.isEnabled = presentationMode
 
 def setup():
     size(w, h)
+    colorMode(RGB, 1)
 
     global s
     s = createSegmentShape()
@@ -43,9 +44,9 @@ def createSegmentShape():
 
     s = createShape()
     s.beginShape()
-    s.fill(255)
     if presentationMode:
-        s.noStroke()
+        s.fill(1, 0.8)
+        s.stroke(1, 0.8)
 
     s.vertex(w * sTaper, 0)
     s.vertex(w * (1 - sTaper), 0)
