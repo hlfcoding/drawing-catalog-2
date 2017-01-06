@@ -12,17 +12,26 @@ class Animation(object):
 
     def updateProgress(self):
         if self.progress >= 1.0:
-            self.times -= 1
-            if self.times > 0:
-                self.delayProgress = self.fps * self.delay
-                self.progress = 0
-            else:
+            if not self._repeat():
                 return
-        if self.delayProgress > 0:
-            self.delayProgress -= 1
+        if self._delay():
             return
         self.progress += self.speed
         self.progress = min(1.0, self.progress)
+
+    def _delay(self):
+        if self.delayProgress == 0:
+            return False
+        self.delayProgress -= 1
+        return True
+
+    def _repeat(self):
+        self.times = max(0, self.times - 1)
+        if self.times == 0:
+            return False
+        self.delayProgress = self.fps * self.delay
+        self.progress = 0
+        return True
 
 class Animator(object):
 
