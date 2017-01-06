@@ -1,31 +1,34 @@
-class Animation(object):
+class Animatable(object):
 
-    def __init__(self, id, duration, delay=0, times=1):
-        self.fps = 60
+    fps = 60
+
+    def __init__(self, id, delay, speed, times):
         self.id = id
         self.delay = delay
-        self.duration = duration
-        self.speed = 1.0 / (self.fps * duration)
+        self.speed = speed
         self.times = times
         self._resetProgress()
 
     def updateProgress(self):
         if self.progress == 1.0:
             if not self._repeat():
-                return
+                return False
             self._resetProgress()
         if self._delay():
-            return
-        self.progress += self.speed
-        self.progress = min(1.0, self.progress)
+            return False
+        return True
 
     def _delay(self):
         if self.delay == 0 or self.delayProgress == 0:
             return False
         if self.delayProgress is None:
-            self.delayProgress = self.fps * self.delay
+            self.delayProgress = Animatable.fps * self.delay
         self.delayProgress -= 1
         return True
+
+    def _incrementProgress(self):
+        self.progress += self.speed
+        self.progress = min(1.0, self.progress)
 
     def _repeat(self):
         self.times = max(0, self.times - 1)
@@ -36,6 +39,19 @@ class Animation(object):
     def _resetProgress(self):
         self.delayProgress = None
         self.progress = 0
+
+class Animation(Animatable):
+
+    def __init__(self, id, duration, delay=0, times=1):
+        self.duration = duration
+        speed = 1.0 / (Animatable.fps * duration)
+        Animatable.__init__(self, id, delay, speed, times)
+
+    def updateProgress(self):
+        if not Animatable.updateProgress(self):
+            return False
+        Animatable._incrementProgress(self)
+        return True
 
 class Animator(object):
 
