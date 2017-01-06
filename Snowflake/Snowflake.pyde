@@ -9,12 +9,14 @@ s = None
 sTaper = 0.2
 
 a = Animator()
-a.addSequence('show',
-              [Animation(id='base', duration=0.3),
-               Animation(id='branch', duration=0.3),
-               Animation(id='subBranch', duration=0.3)])
-a.addSequence('shimmer',
-              [Animation(id='shimmer', duration=1, delay=3, times=sys.maxint)])
+a.addSequence(Sequence(id='show',
+                       animations=[Animation(id='base', duration=0.3),
+                                   Animation(id='branch', duration=0.3),
+                                   Animation(id='subBranch', duration=0.3)]))
+a.addSequence(Sequence(id='shimmer',
+                       animations=[Animation(id='begin', duration=0.5, delay=3),
+                                   Animation(id='end', duration=0.5, delay=1)],
+                       times=sys.maxint))
 a.isEnabled = presentationMode
 
 def setup():
@@ -59,12 +61,15 @@ def createSegmentShape():
 
 def drawBranches(n=6):
     if presentationMode:
-        shimmer = a.getSequenceAnimationProgress('shimmer')
-        # 0 + 0 = 0; 0.1 + 0 = 0.1; 0.5 + 0 = 0.5; 0.6 + -0.2 = 0.4; 1 + -1 = 0
-        shimmer += min(0, 0.5 - shimmer) * 2
-        shimmer *= 0.2 
-        fill(1, 0.8 + shimmer)
-        stroke(1, 0.8 + shimmer)
+        animation = a.getSequenceAnimation('shimmer')
+        base = 0.8
+        shimmer = 1 - base
+        if animation.id == 'begin':
+            shimmer *= animation.progress
+        elif animation.id == 'end':
+            shimmer *= (1 - animation.progress)
+        fill(1, base + shimmer)
+        stroke(1, base + shimmer)
 
     for i in range(0, n):
         drawBranch()

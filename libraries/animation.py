@@ -53,36 +53,54 @@ class Animation(Animatable):
         Animatable._incrementProgress(self)
         return True
 
+class Sequence(Animatable):
+
+    def __init__(self, id, animations, delay=0, times=1):
+        self.animations = animations
+        speed = 1.0 / len(animations)
+        Animatable.__init__(self, id, delay, speed, times)
+
+    def updateProgress(self):
+        if not Animatable.updateProgress(self):
+            return False
+        if not self.current.updateProgress():
+            return False
+        if self.current.progress < 1.0:
+            return False
+        if self.current is not self.animations[-1]:
+            index = self.animations.index(self.current)
+            self.current = self.animations[index + 1]
+        Animatable._incrementProgress(self)
+
+    def _resetProgress(self):
+        Animatable._resetProgress(self)
+        self.current = self.animations[0]
+        for a in self.animations:
+            a._resetProgress()
+
 class Animator(object):
 
     def __init__(self):
         self.isEnabled = True
         self.sequences = {}
 
-    def addSequence(self, id, animations):
-        sequence = {}
-        sequence['current'] = animations[0]
-        sequence['animations'] = animations
-        self.sequences[id] = sequence
+    def addSequence(self, sequence):
+        self.sequences[sequence.id] = sequence
+
+    def getSequenceAnimation(self, sid, aid=None):
+        if aid is None:
+            return self.sequences[sid].current
+        return next(a for a in self.sequences[sid].animations if a.id == aid)
 
     def getSequenceAnimationProgress(self, sid, aid=None):
         if not self.isEnabled:
             return 1.0
-        if aid is None:
-            aid = sid
-        animation = next(a for a in self.sequences[sid]['animations'] if a.id == aid)
-        return animation.progress
+        return self.getSequenceAnimation(sid, aid).progress
 
     def updateSequence(self, id):
         if not self.isEnabled:
             return
-        sequence = self.sequences[id]
-        animation = sequence['current']
-        animations = sequence['animations']
-        animation.updateProgress()
-        if animation is animations[-1] or animation.progress < 1.0:
-            return
-        sequence['current'] = animations[animations.index(animation) + 1]
+        self.sequences[id].updateProgress()
 
 def rotatePerSecond(times):
     seconds = millis() / 1000.0
