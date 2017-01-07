@@ -1,6 +1,8 @@
 from animation import *
 from layout import *
 
+# qz.com/581000
+
 presentationMode = True
 
 w = 300
