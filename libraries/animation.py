@@ -4,12 +4,19 @@ class Animatable(object):
 
     def __init__(self, id, delay, speed, times):
         self.id = id
-        self.delay = delay
-        self.speed = speed
-        self.times = times
+        self.delay = delay  # seconds
+        self.speed = speed  # between 0, 1
+        self.times = times  # use `sys.maxint` for forever
         self._resetProgress()
 
     def updateProgress(self):
+        """
+        Returns whether `progress` was updated. For example, a running delay
+        can prevent updates. This base implementation does not actually update
+        progress. You must use the return value and call `_incrementProgress`
+        in the override where fit. On each repeat, `progress` resets to 0, and
+        `times` gets decremented.
+        """
         if self.progress == 1.0:
             if not self._repeat():
                 return False
