@@ -1,4 +1,5 @@
 from animation import *
+from fx import *
 from layout import *
 
 # qz.com/581000
@@ -19,6 +20,7 @@ a.addSequence(Sequence(id='shimmer',
                        times=sys.maxint))
 a.isEnabled = presentationMode
 
+fx = Effects(animator=a)
 l = BranchLayout(animator=a)
 
 def setup():
@@ -59,15 +61,7 @@ def createSegmentShape():
 
 def drawBranches(n=6):
     if presentationMode:
-        animation = a.getSequenceAnimation('shimmer')
-        base = 0.8
-        shimmer = 1 - base
-        if animation.id == 'begin':
-            shimmer *= animation.progress
-        elif animation.id == 'end':
-            shimmer *= (1 - animation.progress)
-        fill(1, base + shimmer)
-        stroke(1, base + shimmer)
+        fx.updateShimmer()
 
     for i in range(0, n):
         drawBranch()
