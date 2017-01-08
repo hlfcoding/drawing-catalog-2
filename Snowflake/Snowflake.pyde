@@ -7,8 +7,6 @@ presentationMode = True
 
 w = 300
 h = 300
-s = None
-sTaper = 0.2
 
 a = Animator()
 a.addSequence(Sequence(id='show',
@@ -21,15 +19,13 @@ a.addSequence(Sequence(id='shimmer',
                        times=sys.maxint))
 a.isEnabled = presentationMode
 
+l = BranchLayout(animator=a)
+
 def setup():
     size(w, h)
     colorMode(RGB, 1)
 
-    global s
-    s = createSegmentShape()
-
-    global l
-    l = BranchLayout(shape=s, taper=sTaper, coreRadius=8)
+    l.useShape(createSegmentShape())
 
 def draw():
     if presentationMode:
@@ -39,7 +35,7 @@ def draw():
     if presentationMode:
         rotatePerSecond(0.1)
 
-    l.update(animator=a)
+    l.update()
     drawBranches()
 
     a.updateSequence('shimmer')
@@ -53,8 +49,8 @@ def createSegmentShape():
     s.beginShape()
     s.disableStyle()
 
-    s.vertex(w * sTaper, 0)
-    s.vertex(w * (1 - sTaper), 0)
+    s.vertex(w * l.taper, 0)
+    s.vertex(w * (1 - l.taper), 0)
     s.vertex(w, h)
     s.vertex(0, h)
 
@@ -109,5 +105,5 @@ def drawSubBranches():
 def drawSegment(scaleX, scaleY):
     pushMatrix()
     scale(scaleX, scaleY)
-    shape(s)
+    shape(l.shape)
     popMatrix()

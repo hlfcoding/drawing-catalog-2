@@ -1,7 +1,9 @@
+import weakref
+
 class BranchLayout(object):
 
-    def __init__(self, shape, taper, coreRadius):
-        self.shape = shape
+    def __init__(self, animator, taper=0.2, coreRadius=8):
+        self.animator = weakref.ref(animator)
         self.taper = taper
         self.coreRadius = coreRadius
 
@@ -10,21 +12,21 @@ class BranchLayout(object):
         self.leftSubBranch = SegmentTransform()
         self.rightSubBranch = SegmentTransform()
 
-    def update(self, animator):
+    def update(self):
         shapeMode(CENTER)
 
-        sY = 0.2 * animator.getSequenceAnimationProgress('show', 'base')
+        sY = 0.2 * self.animator().getSequenceAnimationProgress('show', 'base')
         self.base.scale = (1.8, sY)
         y = self.coreRadius + self.shape.height * sY
         self.base.translation = (0, -y)
 
-        sY = animator.getSequenceAnimationProgress('show', 'branch')
+        sY = self.animator().getSequenceAnimationProgress('show', 'branch')
         self.branch.scale = (1, sY)
         y = (self.shape.height + 1) - y
         y -= self.shape.height * (1 - sY) / 2
         self.branch.translation = (0, -y)
 
-        sY = 0.5 * animator.getSequenceAnimationProgress('show', 'subBranch')
+        sY = 0.5 * self.animator().getSequenceAnimationProgress('show', 'subBranch')
         self.leftSubBranch.scale = self.rightSubBranch.scale = (0.6, sY)
         t = PI / 3
         self.leftSubBranch.rotation = -t
@@ -33,6 +35,9 @@ class BranchLayout(object):
         x += self.shape.width / 2 * (1 - self.taper / 2)
         self.leftSubBranch.translation = (-x, 0)
         self.rightSubBranch.translation = (x, 0)
+
+    def useShape(self, shape):
+        self.shape = shape
 
 class SegmentTransform(object):
 
