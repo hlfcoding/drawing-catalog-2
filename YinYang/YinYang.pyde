@@ -1,6 +1,6 @@
-from hlf.core_elements import *
+from hlf.core_elements import ContainerElement, Element
 
-from arrangements import *
+from arrangements import SwirlingArrangement
 
 shouldLoop = True
 shouldExport = False
