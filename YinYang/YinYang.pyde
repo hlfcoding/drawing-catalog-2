@@ -1,14 +1,10 @@
 from hlf.core_elements import *
 
-from forces import *
 from arrangements import *
 
-el = None
-swirl = None
 shouldLoop = True
 shouldExport = False
 
-backgroundColor = color(225)
 #childCount = 2
 childCount = 3
 thetaToColorScalar = 5
@@ -18,38 +14,45 @@ thetaVelocityScalar = 2
 w = 300
 h = 300
 
+el = None
+swirl = None
+
+backgroundColor = color(225)
+
 def setup():
-    global el
-    global swirl
-    global thetaVelocityScalar
-    margin = 0.15
     size(w, h)
     colorMode(HSB)
-    background(backgroundColor)
+
+    margin = 0.15
     elementSize = w * (1 - margin * 2)
     if shouldExport:
         fps = 24
         frameRate(fps)
+        global thetaVelocityScalar
         thetaVelocityScalar *= 60 / fps
+
+    global el
     el = ContainerElement(
         name='yinyangyon',
         size={'width': elementSize, 'height': elementSize}
     )
+
+    global swirl
     swirl = SwirlingArrangement(el, createChildElements(childCount))
+
     for element in el.childElements:
         element.forces['swirl'].dampener *= thetaVelocityScalar
 
+    background(backgroundColor)
 
 def draw():
-    global el
     pushMatrix()
-    translate(width / 2, height / 2)
+    translate(w / 2, h / 2)
     el.update()
     el.draw()
     popMatrix()
     if shouldExport:
         saveFrame('frames/frame-####.png')
-
 
 def mousePressed():
     global shouldLoop
@@ -58,7 +61,6 @@ def mousePressed():
         loop()
     else:
         noLoop()
-
 
 def createChildElements(count):
     global backgroundColor

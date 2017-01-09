@@ -1,6 +1,5 @@
 from forces import SwirlingForce
 
-
 class SwirlingArrangement(object):
 
     def __init__(self, containerElement, childElements):
@@ -33,4 +32,3 @@ class SwirlingArrangement(object):
             '({})'.format(label) if label is not None else ''
         )
         println(output)
-

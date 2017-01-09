@@ -1,9 +1,6 @@
 class SwirlingForce(object):
 
-    def __init__(self,
-                 dampener=0.01,
-                 offset=0,
-                 radius=100):
+    def __init__(self, dampener=0.01, offset=0, radius=100):
         self.dampener = dampener
         self.offset = offset
         self.radius = radius
@@ -24,4 +21,3 @@ class SwirlingForce(object):
             '({})'.format(label) if label is not None else ''
         )
         println(output)
-
