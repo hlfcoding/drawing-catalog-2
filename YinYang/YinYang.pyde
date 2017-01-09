@@ -15,17 +15,18 @@ thetaToColorScalar = 5
 thetaToColorRange = 100
 thetaVelocityScalar = 2
 
+w = 300
+h = 300
 
 def setup():
     global el
     global swirl
     global thetaVelocityScalar
     margin = 0.15
-    stageSize = 300
-    elementSize = stageSize * (1 - margin * 2)
-    size(stageSize, stageSize)
+    size(w, h)
     colorMode(HSB)
     background(backgroundColor)
+    elementSize = w * (1 - margin * 2)
     if shouldExport:
         fps = 24
         frameRate(fps)
@@ -105,4 +106,3 @@ def createChildElements(count):
             element.decorators['before'].append(drawOutline)
         elements.append(element)
     return elements
-
