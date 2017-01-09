@@ -1,4 +1,4 @@
-from animation import Animation, Animator, Sequence, rotatePerSecond
+from hlf.animation import Animation, Animator, Sequence, rotatePerSecond
 
 from fx import Effects
 from layout import BranchLayout
