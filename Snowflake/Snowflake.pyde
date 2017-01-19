@@ -9,6 +9,7 @@ presentationMode = True
 
 w = 300
 h = 300
+b = 6
 
 a = Animator()
 a.addSequence(Sequence(id='show',
@@ -45,7 +46,7 @@ def draw():
     a.updateSequence('show')
 
 def createSegmentShape():
-    h = 30
+    h = 35
     w = 10
 
     s = createShape()
@@ -60,23 +61,27 @@ def createSegmentShape():
     s.endShape(CLOSE)
     return s
 
-def drawBranches(n=6):
+def drawBranches():
     if presentationMode:
         fx.updateShimmer()
 
-    for i in range(0, n):
+    for i in range(0, b):
         drawBranch()
         pushMatrix()
-        rotate(TWO_PI / n)
-    for i in range(0, n):
+        rotate(TWO_PI / b)
+    for i in range(0, b):
         popMatrix()
 
 def drawBranch():
     pushMatrix()
 
+    pushMatrix()
+    rotate(-PI / b)
     translate(*l.base.translation)
     drawSegment(*l.base.scale)
+    popMatrix()
 
+    translate(*l.base.translation)
     translate(*l.branch.translation)
     drawSegment(*l.branch.scale)
 

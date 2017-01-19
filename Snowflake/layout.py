@@ -15,10 +15,10 @@ class BranchLayout(object):
     def update(self):
         shapeMode(CENTER)
 
-        sY = 0.2 * self.animator().getSequenceAnimationProgress('show', 'base')
-        self.base.scale = (1.8, sY)
-        y = self.coreRadius + self.shape.height * sY
-        self.base.translation = (0, -y)
+        sY = 0.3 * self.animator().getSequenceAnimationProgress('show', 'base')
+        self.base.scale = (3.8, sY)
+        y = -self.shape.height * sY * 2
+        self.base.translation = (0, y)
 
         sY = self.animator().getSequenceAnimationProgress('show', 'branch')
         self.branch.scale = (1, sY)
