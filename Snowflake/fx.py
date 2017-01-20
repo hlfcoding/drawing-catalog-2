@@ -1,17 +1,24 @@
 import weakref
 
-class Effects():
+class Effects(object):
 
     def __init__(self, animator):
         self.animator = weakref.ref(animator)
+        self.shimmer = 0
+        self.specSize = 0.3
+
+    @property
+    def baseAlpha(self):
+        return 0.5 + 0.2 * self.shimmer
+
+    @property
+    def specAlpha(self):
+        return 1 - self.baseAlpha
 
     def updateShimmer(self):
         animation = self.animator().getSequenceAnimation('shimmer')
-        base = 0.8
-        shimmer = 1 - base
+        self.shimmer = 1
         if animation.id == 'begin':
-            shimmer *= animation.progress
+            self.shimmer *= animation.progress
         elif animation.id == 'end':
-            shimmer *= (1 - animation.progress)
-        fill(1, base + shimmer)
-        stroke(1, base + shimmer)
+            self.shimmer *= (1 - animation.progress)

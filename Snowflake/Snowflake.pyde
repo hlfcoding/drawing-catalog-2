@@ -78,7 +78,7 @@ def drawBranch():
     pushMatrix()
     rotate(-PI / b)
     translate(*l.base.translation)
-    drawSegment(*l.base.scale)
+    drawSegment(*l.base.scale, specAxis='x')
     popMatrix()
 
     translate(*l.base.translation)
@@ -102,8 +102,20 @@ def drawSubBranches():
     drawSegment(*l.rightSubBranch.scale)
     popMatrix()
 
-def drawSegment(scaleX, scaleY):
+def drawSegment(scaleX, scaleY, specAxis='y'):
+    fill(1, fx.baseAlpha)
+    stroke(1, fx.baseAlpha / 2)
     pushMatrix()
     scale(scaleX, scaleY)
+    shape(l.shape)
+    popMatrix()
+
+    fill(1, fx.specAlpha)
+    noStroke()
+    pushMatrix()
+    if specAxis == 'y':
+        scale(fx.specSize * scaleX, scaleY)
+    elif specAxis == 'x':
+        scale(scaleX, fx.specSize * scaleY)
     shape(l.shape)
     popMatrix()
