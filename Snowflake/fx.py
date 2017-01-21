@@ -9,7 +9,7 @@ class Effects(object):
 
     @property
     def baseAlpha(self):
-        return 0.5 + 0.2 * self.shimmer
+        return 0.5 + 0.3 * self.shimmer
 
     @property
     def specAlpha(self):
