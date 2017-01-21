@@ -16,7 +16,7 @@ class BranchLayout(object):
         shapeMode(CENTER)
 
         sY = 0.3 * self.animator().getSequenceAnimationProgress('show', 'base')
-        self.base.scale = (3.8, sY)
+        self.base.scale = (3, -sY)
         y = -self.shape.height * sY * 2
         self.base.translation = (0, y)
 
