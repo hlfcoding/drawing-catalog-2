@@ -14,15 +14,17 @@ class BranchLayout(object):
 
     def update(self):
         shapeMode(CENTER)
+        h = self.shape.height
+        w = self.shape.width
 
         sY = 0.3 * self.animator().getSequenceAnimationProgress('show', 'base')
         self.base.scale = (3, -sY)
-        y = -self.shape.height * sY * 2
+        y = -h * sY * 2
         self.base.translation = (0, y)
 
         sY = self.animator().getSequenceAnimationProgress('show', 'branch')
         self.branch.scale = (1, sY)
-        y -= 3 - (-self.shape.height * (sY - 1) / 2)
+        y -= 3 - (-h * (sY - 1) / 2)
         self.branch.translation = (0, y)
 
         sY = 0.5 * self.animator().getSequenceAnimationProgress('show', 'subBranch')
@@ -30,8 +32,8 @@ class BranchLayout(object):
         t = PI / 3
         self.leftSubBranch.rotation = -t
         self.rightSubBranch.rotation = t
-        x = abs(self.shape.height * sY * sin(degrees(t))) # sin(t) = x/s.height
-        x += self.shape.width / 2 * (1 - self.taper / 2)
+        x = abs(h * sY * sin(degrees(t))) # sin(t) = x/s.height
+        x += w / 2 * (1 - self.taper / 2)
         self.leftSubBranch.translation = (-x, 0)
         self.rightSubBranch.translation = (x, 0)
 
