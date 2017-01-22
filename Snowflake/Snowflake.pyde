@@ -90,17 +90,20 @@ def drawBranch():
     popMatrix()
 
 def drawSubBranches():
-    pushMatrix()
-    translate(*l.leftSubBranch.translation)
-    rotate(l.leftSubBranch.rotation)
-    drawSegment(*l.leftSubBranch.scale)
-    popMatrix()
+    for p in l.subBranchPairs:
+        left, right = p
 
-    pushMatrix()
-    translate(*l.rightSubBranch.translation)
-    rotate(l.rightSubBranch.rotation)
-    drawSegment(*l.rightSubBranch.scale)
-    popMatrix()
+        pushMatrix()
+        translate(*left.translation)
+        rotate(left.rotation)
+        drawSegment(*left.scale)
+        popMatrix()
+    
+        pushMatrix()
+        translate(*right.translation)
+        rotate(right.rotation)
+        drawSegment(*right.scale)
+        popMatrix()
 
 def drawSegment(scaleX, scaleY, specAxis='y'):
     fill(1, fx.baseAlpha)

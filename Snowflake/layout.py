@@ -2,15 +2,16 @@ import weakref
 
 class BranchLayout(object):
 
-    def __init__(self, animator, taper=0.2, coreRadius=8):
+    def __init__(self, animator, taper=0.2, coreRadius=8, subBranchCount=2):
         self.animator = weakref.ref(animator)
         self.taper = taper
         self.coreRadius = coreRadius
 
         self.base = SegmentTransform()
         self.branch = SegmentTransform()
-        self.leftSubBranch = SegmentTransform()
-        self.rightSubBranch = SegmentTransform()
+        self.subBranchPairs = []
+        for i in range(0, subBranchCount):
+            self.subBranchPairs.append((SegmentTransform(), SegmentTransform()))
 
     def update(self):
         shapeMode(CENTER)
@@ -27,15 +28,22 @@ class BranchLayout(object):
         y -= 3 - (-h * (sY - 1) / 2)
         self.branch.translation = (0, y)
 
-        sY = 0.5 * self.animator().getSequenceAnimationProgress('show', 'subBranch')
-        self.leftSubBranch.scale = self.rightSubBranch.scale = (0.6, sY)
-        t = PI / 3
-        self.leftSubBranch.rotation = -t
-        self.rightSubBranch.rotation = t
-        x = abs(h * sY * sin(degrees(t))) # sin(t) = x/s.height
-        x += w / 2 * (1 - self.taper / 2)
-        self.leftSubBranch.translation = (-x, 0)
-        self.rightSubBranch.translation = (x, 0)
+        spaces = len(self.subBranchPairs) + 1
+        spacing = 1.0 / spaces
+        for i, p in enumerate(self.subBranchPairs):
+            i += 1
+            left, right = p
+            sX = sqrt(i * spacing) * 0.9 
+            sY = (i * spacing) * self.animator().getSequenceAnimationProgress('show', 'subBranch')
+            left.scale = right.scale = (sX, sY)
+            t = PI / 3
+            left.rotation = -t
+            right.rotation = t
+            x = abs((h * sY) * sin(degrees(t))) # sin(t) = x/s.height
+            x += (w / 2) * (1 - ((spaces - i - 1) * self.taper))
+            y = (-h / 2) + ((i * spacing) * h) 
+            left.translation = (-x, y)
+            right.translation = (x, y)
 
     def useShape(self, shape):
         self.shape = shape
