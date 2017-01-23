@@ -28,6 +28,7 @@ l = BranchLayout(animator=a)
 def setup():
     size(w, h)
     colorMode(RGB, 1)
+    shapeMode(CENTER)
 
     l.useShape(createSegmentShape())
 

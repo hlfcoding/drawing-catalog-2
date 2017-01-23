@@ -14,7 +14,6 @@ class BranchLayout(object):
             self.subBranchPairs.append((SegmentTransform(), SegmentTransform()))
 
     def update(self):
-        shapeMode(CENTER)
         a = self.animator()
         if a.sequences['show'].progress == 1:
             return
