@@ -63,11 +63,11 @@ def drawTriangleFan():
     shape(sh)
 
     rotate(TWO_PI / 3)
-    fill(0, 0, 1)
+    fill(1)
     shape(sh)
 
     rotate(TWO_PI / 3)
-    fill(1)
+    fill(0, 0, 1)
     shape(sh)
 
 def mousePressed():
