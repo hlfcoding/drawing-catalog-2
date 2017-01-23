@@ -22,12 +22,12 @@ class BranchLayout(object):
         h = self.shape.height
         w = self.shape.width
 
-        sY = 0.3 * self.animator().getSequenceAnimationProgress('show', 'base')
+        sY = 0.3 * a.getSequenceAnimationProgress('show', 'base')
         self.base.scale = (3, -sY)
         y = -h * sY * 2
         self.base.translation = (0, y)
 
-        sY = self.animator().getSequenceAnimationProgress('show', 'branch')
+        sY = a.getSequenceAnimationProgress('show', 'branch')
         self.branch.scale = (1, sY)
         y -= 3 - (-h * (sY - 1) / 2)
         self.branch.translation = (0, y)
@@ -38,7 +38,7 @@ class BranchLayout(object):
             i += 1
             left, right = p
             sX = sqrt(i * spacing) * 0.9 
-            sY = (i * spacing) * self.animator().getSequenceAnimationProgress('show', 'subBranch')
+            sY = (i * spacing) * a.getSequenceAnimationProgress('show', 'subBranch')
             left.scale = right.scale = (sX, sY)
             t = PI / 3
             left.rotation = -t
