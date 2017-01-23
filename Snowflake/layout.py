@@ -15,6 +15,10 @@ class BranchLayout(object):
 
     def update(self):
         shapeMode(CENTER)
+        a = self.animator()
+        if a.sequences['show'].progress == 1:
+            return
+
         h = self.shape.height
         w = self.shape.width
 
