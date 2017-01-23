@@ -109,6 +109,6 @@ class Animator(object):
             return
         self.sequences[id].updateProgress()
 
-def rotatePerSecond(times):
+def rotatePerSecond(times, direction=1):
     seconds = millis() / 1000.0
-    rotate(radians(times * seconds * 360 % 360))
+    rotate(direction * radians(times * seconds * 360 % 360))
