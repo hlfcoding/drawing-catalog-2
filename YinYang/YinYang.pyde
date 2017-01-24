@@ -8,6 +8,7 @@ w = 300
 h = 300
 sh = None
 d = 150
+fps = 30.0
 
 def setup():
     size(w, h)
@@ -15,7 +16,9 @@ def setup():
     shapeMode(CENTER)
 
     if shouldExport:
-        frameRate(24)
+        global fps
+        fps = 24.0
+        frameRate(fps)
 
     global sh
     sh = createTriangleShape()
@@ -26,7 +29,7 @@ def draw():
     translate(w / 2, h / 2)
 
     pushMatrix()
-    rotatePerSecond(0.1, direction=-1)
+    rotatePerSecond(0.1, direction=-1, fps=fps)
     s = d / sh.width
     scale(s)
     n = 500.0
@@ -42,7 +45,7 @@ def draw():
         pushMatrix()
         if rainbowMode:
             drawTriangleFan(colorOffset=0.1 + (i / n) / 4,
-                            colorShift=(millis() / 1000.0) / p % 1)
+                            colorShift=(frameCount / fps) / p % 1)
         else:
             drawTriangleFan()
         popMatrix()
