@@ -6,11 +6,11 @@ shouldExport = False
 w = 300
 h = 300
 sh = None
+d = 150
 
 def setup():
     size(w, h)
     colorMode(RGB, 1)
-    noStroke()
     shapeMode(CENTER)
 
     if shouldExport:
@@ -23,14 +23,15 @@ def setup():
 
 def draw():
     translate(w / 2, h / 2)
-    rotatePerSecond(0.1, direction=-1)
 
+    pushMatrix()
+    rotatePerSecond(0.1, direction=-1)
+    s = d / sh.width
+    scale(s)
     n = 500.0
     i = 1.0
-    s = 5.0
     dS = s / n
     dR = 1.3 * TWO_PI / n
-    scale(s)
     while i < n:
         rotate(-(0.001 + dR * pow((n - i) / n, 1.5)))
         scale(1.0 - dS * pow(i / n, 0.5))
@@ -39,6 +40,9 @@ def draw():
         pushMatrix()
         drawTriangleFan()
         popMatrix()
+    popMatrix()
+
+    drawCleanup()
 
     if shouldExport:
         saveFrame('frames/frame-####.png')
@@ -58,7 +62,16 @@ def createTriangleShape():
     s.endShape(CLOSE)
     return s
 
+def drawCleanup():
+    noFill()
+    wt = 4
+    w = h = d + 15 + 2 * wt
+    stroke(0.7)
+    strokeWeight(wt)
+    ellipse(0, 0, w, h)
+    
 def drawTriangleFan():
+    noStroke()
     fill(1, 0, 0)
     shape(sh)
 
