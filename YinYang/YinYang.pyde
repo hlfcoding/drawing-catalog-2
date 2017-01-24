@@ -1,5 +1,6 @@
 from hlf.animation import rotatePerSecond
 
+rainbowMode = True
 shouldLoop = True
 shouldExport = False
 
@@ -10,7 +11,7 @@ d = 150
 
 def setup():
     size(w, h)
-    colorMode(RGB, 1)
+    colorMode(HSB, 1)
     shapeMode(CENTER)
 
     if shouldExport:
@@ -32,13 +33,18 @@ def draw():
     i = 1.0
     dS = s / n
     dR = 1.3 * TWO_PI / n
+    p = 25.0 # color-shift period
     while i < n:
         rotate(-(0.001 + dR * pow((n - i) / n, 1.5)))
         scale(1.0 - dS * pow(i / n, 0.5))
         i += 1.0
 
         pushMatrix()
-        drawTriangleFan()
+        if rainbowMode:
+            drawTriangleFan(colorOffset=0.1 + (i / n) / 4,
+                            colorShift=(millis() / 1000.0) / p % 1)
+        else:
+            drawTriangleFan()
         popMatrix()
     popMatrix()
 
@@ -70,17 +76,22 @@ def drawCleanup():
     strokeWeight(wt)
     ellipse(0, 0, w, h)
     
-def drawTriangleFan():
+def drawTriangleFan(colorOffset=0, colorShift=0):
+    dS = constrain(colorOffset, 0, 1)
+    dH = constrain(colorShift, 0, 1)
     noStroke()
-    fill(1, 0, 0)
+    fill((0 + dH) % 1, 1 - dS, 1)
     shape(sh)
 
     rotate(TWO_PI / 3)
-    fill(1)
+    if colorOffset == 0:
+        fill(0, 0, 1)
+    else:
+        fill((0.33 + dH) % 1, 1 - dS, 1)
     shape(sh)
 
     rotate(TWO_PI / 3)
-    fill(0, 0, 1)
+    fill((0.66 + dH) % 1, 1 - dS, 1)
     shape(sh)
 
 def mousePressed():
