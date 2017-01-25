@@ -2,10 +2,23 @@
 
 Python sketches and boilerplate using Processing via jdf/processing.py.
 
-## I. YinYang
+## Exports
 
-![yin-yang-1](https://s-media-cache-ak0.pinimg.com/originals/d4/e6/86/d4e686bfb5b87c14b8949204cd9bd579.jpg)
-![yin-yang-2](https://s-media-cache-ak0.pinimg.com/originals/1c/f7/a2/1cf7a2138ebb779f21656de75a4460eb.jpg)
+### I. YinYang
+
+![yin-yang-yon](https://cloud.githubusercontent.com/assets/100884/22240247/124216f6-e1cf-11e6-8dd7-c9f3ba237645.gif)
+
+### II. Snowflake
+
+![snowflake](https://cloud.githubusercontent.com/assets/100884/22242809/9cc984c6-e1d9-11e6-9db9-744657a40290.gif)
+
+---
+
+```sh
+# gist.github.com/dergachev/4627207
+$ ffmpeg -i "$my_file_name.mov" -s 300x300 -pix_fmt rgb24 -r 10 -f gif - | \
+> gifsicle --optimize=3 --delay=3 > "$my_file_name.gif"
+```
 
 ## Setup
 
