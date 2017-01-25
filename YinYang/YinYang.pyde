@@ -1,24 +1,25 @@
 from hlf.animation import rotatePerSecond
+from hlf.core import Exporting 
 
 rainbowMode = True
 shouldLoop = True
-shouldExport = False
 
 w = 300
 h = 300
 sh = None
 d = 150
-fps = 30.0
+
+e = Exporting()
+e.isEnabled = False
+
+def fps():
+    return e.fps if e.isEnabled else 30.0
 
 def setup():
     size(w, h)
     colorMode(HSB, 1)
     shapeMode(CENTER)
-
-    if shouldExport:
-        global fps
-        fps = 24.0
-        frameRate(fps)
+    e.setup()
 
     global sh
     sh = createTriangleShape()
@@ -29,7 +30,7 @@ def draw():
     translate(w / 2, h / 2)
 
     pushMatrix()
-    rotatePerSecond(0.1, direction=-1, fps=fps)
+    rotatePerSecond(0.1, direction=-1, fps=fps())
     s = d / sh.width
     scale(s)
     n = 500.0
@@ -45,7 +46,7 @@ def draw():
         pushMatrix()
         if rainbowMode:
             drawTriangleFan(colorOffset=0.1 + (i / n) / 4,
-                            colorShift=(frameCount / fps) / p % 1)
+                            colorShift=(frameCount / fps()) / p % 1)
         else:
             drawTriangleFan()
         popMatrix()
@@ -53,8 +54,7 @@ def draw():
 
     drawCleanup()
 
-    if shouldExport:
-        saveFrame('frames/frame-####.png')
+    e.update()
 
 def createTriangleShape():
     w = 30.0

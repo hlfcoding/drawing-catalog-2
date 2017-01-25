@@ -1,4 +1,5 @@
 from hlf.animation import Animation, Animator, Sequence, rotatePerSecond
+from hlf.core import Exporting 
 
 from fx import Effects
 from layout import BranchLayout
@@ -22,6 +23,9 @@ a.addSequence(Sequence(id='shimmer',
                        times=sys.maxint))
 a.isEnabled = presentationMode
 
+e = Exporting()
+e.isEnabled = True
+
 fx = Effects(animator=a)
 l = BranchLayout(animator=a)
 
@@ -29,6 +33,7 @@ def setup():
     size(w, h)
     colorMode(RGB, 1)
     shapeMode(CENTER)
+    e.setup()
 
     l.useShape(createSegmentShape())
 
@@ -45,6 +50,8 @@ def draw():
 
     a.updateSequence('shimmer')
     a.updateSequence('show')
+
+    e.update()
 
 def createSegmentShape():
     h = 35
