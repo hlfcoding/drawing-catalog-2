@@ -1,40 +1,60 @@
-p = None  # Position
-v = None  # Velocity
-a = None  # Acceleration
-g = None  # Gravity
+from hlf.element import Element, Size, Skin
 
-aP = None  # Attractor Position
+w = 100
+h = 100
 
-d = 0.1   # Damping
-s = 5     # Size
-m = 5     # Max Velocity
+d = 0.1  # damping
+m = 5  # max velocity
 
+el = Element('ball', position=PVector(w / 2, h / 2))
+
+attractTo = el.position.copy()
+def attraction():
+    f = PVector.sub(attractTo, el.position)
+    f.normalize()
+    f.mult(0.01)
+    return f
+
+el.forces.append(attraction)
+el.forces.append(PVector(0, 0.1))  # gravity
+el.forces.append(PVector(0.005, 0))  # wind
 
 def setup():
-    size(100, 100)
+    size(w, h)
+    colorMode(RGB, 1)
+    shapeMode(CENTER)
 
-    global p, v, a, g, d, aP
-    p = PVector(width / 2, height / 2)
-    v = PVector()
-    a = PVector(0.005, 0)
-    g = PVector(0, 0.1)
-
-    aP = PVector(p.x, p.y)
-
+    el.skin.fill = color(1)
 
 def draw():
-    global p, v, a, g, d, aP
+    background(0)
 
-    aA = PVector.sub(aP, p)
-    aA.normalize()
-    aA.mult(0.01)
-    v.add(aA)
-    v.add(a)
-    v.add(g)
-    v.limit(m)
+    el.updateVelocity()
+    el.velocity.limit(m)
+    wrap()
+    el.updatePosition()
+    el.draw()
+
+    stroke(1)
+    line(el.position.x, el.position.y, attractTo.x, attractTo.y)
+
+def mousePressed():
+    hit = PVector.dist(
+        PVector(mouseX, mouseY), el.position) < el.size.radius * 5
+    if hit:
+        el.velocity.add(0, 10, 0)
+
+def mouseMoved():
+    global attractTo
+    attractTo.set(mouseX, mouseY)
+
+def wrap():
+    p = el.position
+    v = el.velocity
+    s = el.size.radius
 
     setY = True
-    if p.y > height - s and v.y > 0:
+    if p.y > h - s and v.y > 0:
         v.y = v.y * -(1 - d) + 0.1
     elif p.y < s and v.y < 0:
         v.y = v.y * -(1 - d) - 0.1
@@ -42,8 +62,9 @@ def draw():
         setY = False
     if setY and abs(v.y) < 0.1:
         v.y = 0
+
     setX = True
-    if p.x > width - s and v.x > 0:
+    if p.x > w - s and v.x > 0:
         v.x *= -(1 - d)
         v.x += 0.1
     elif p.x < s and v.x < 0:
@@ -53,24 +74,3 @@ def draw():
         setX = False
     if setX and abs(v.x) < 0.1:
         v.x = 0
-
-    p.add(v)
-
-    background(0)
-    fill(255)
-    noStroke()
-    ellipse(p.x, p.y, s * 2, s * 2)
-    stroke(255)
-    line(p.x, p.y, aP.x, aP.y)
-
-def mousePressed():
-    global p, s, v
-    hit = PVector.dist(PVector(mouseX, mouseY), p) < s * 5
-    if hit:
-        v.add(0, 10, 0)
-
-
-def mouseMoved():
-    global aP
-    aP.set(mouseX, mouseY)
-
