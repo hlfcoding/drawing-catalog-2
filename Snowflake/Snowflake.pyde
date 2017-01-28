@@ -24,7 +24,7 @@ a.addSequence(Sequence(id='shimmer',
 a.isEnabled = presentationMode
 
 e = Exporting()
-e.isEnabled = True
+e.isEnabled = False
 
 fx = Effects(animator=a)
 l = BranchLayout(animator=a)
