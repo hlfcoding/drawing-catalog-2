@@ -2,6 +2,7 @@ class Umbrella(object):
 
     def __init__(self):
         self.radius = 25.0
+        self.ribCount = 4
         self.shape = self.createShape()
 
     @property
@@ -9,18 +10,17 @@ class Umbrella(object):
         return self.radius * 2
 
     def createShape(self):
-        g = createShape(GROUP)
+        s = createShape(GROUP)
 
-        e = createShape(ELLIPSE, 0, 0, self.diameter, self.diameter)
-        withOffset = 1.2
-        h = self.diameter / 20
-        r = createShape(RECT, -self.radius * withOffset, -h / 2,
-                        self.diameter * withOffset, h)
-        r2 = createShape(RECT, -self.radius * withOffset, -h / 2,
-                         self.diameter * withOffset, h)
-        r2.rotate(PI / 2)
+        canopy = createShape(ELLIPSE, 0, 0, self.diameter, self.diameter)
+        s.addChild(canopy)
 
-        g.addChild(e)
-        g.addChild(r)
-        g.addChild(r2)
-        return g
+        for i in range(0, self.ribCount):
+            offset = 0.2
+            h = self.diameter / 20
+            rib = createShape(RECT, -self.radius * (1 + offset), -h / 2,
+                              self.diameter * (1 + offset), h)
+            rib.rotate(PI * i / self.ribCount)
+            s.addChild(rib)
+
+        return s
