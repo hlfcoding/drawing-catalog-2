@@ -114,6 +114,8 @@ def drawSubBranches():
         popMatrix()
 
 def drawSegment(scaleX, scaleY, specAxis='y'):
+    if scaleX == 0 or scaleY == 0:
+        return
     fill(1, fx.baseAlpha)
     stroke(1, fx.baseAlpha / 2)
     pushMatrix()
