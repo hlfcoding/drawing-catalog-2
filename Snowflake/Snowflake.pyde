@@ -6,6 +6,7 @@ from layout import BranchLayout
 
 # qz.com/581000
 
+interactionMode = True
 presentationMode = True
 
 w = 300
@@ -16,7 +17,8 @@ a = Animator()
 a.addSequence(Sequence(id='show',
                        animations=[Animation(id='base', duration=0.3),
                                    Animation(id='branch', duration=0.3),
-                                   Animation(id='subBranch', duration=0.3)]))
+                                   Animation(id='subBranch', duration=0.3)],
+                       autoNext=(not interactionMode)))
 a.addSequence(Sequence(id='shimmer',
                        animations=[Animation(id='begin', duration=0.5, delay=3),
                                    Animation(id='end', duration=0.5, delay=1)],
@@ -36,6 +38,8 @@ def setup():
     e.setup()
 
     l.useShape(createSegmentShape())
+    if interactionMode:
+        a.sequences['show'].pause()
 
 def draw():
     if presentationMode:
@@ -52,6 +56,12 @@ def draw():
     a.updateSequence('show')
 
     e.update()
+
+def keyPressed():
+    if keyCode == 32:  # SPACE
+        s = a.sequences['show']
+        if s.isPaused:
+            s.play()
 
 def createSegmentShape():
     h = 35
