@@ -73,8 +73,9 @@ class Animation(Animatable):
 
 class Sequence(Animatable):
 
-    def __init__(self, id, animations, delay=0, times=1):
+    def __init__(self, id, animations, delay=0, times=1, autoNext=True):
         self.animations = animations
+        self.autoNext = autoNext
         speed = 1.0 / len(animations)
         Animatable.__init__(self, id, delay, speed, times)
 
@@ -88,6 +89,8 @@ class Sequence(Animatable):
         if self.current is not self.animations[-1]:
             index = self.animations.index(self.current)
             self.current = self.animations[index + 1]
+            if not self.autoNext:
+                self.pause()
         Animatable._incrementProgress(self)
 
     def _resetProgress(self):
