@@ -5,9 +5,14 @@ class Animatable(object):
     def __init__(self, id, delay, speed, times):
         self.id = id
         self.delay = delay  # seconds
+        self.isPaused = False
         self.speed = speed  # between 0, 1
         self.times = times  # use `sys.maxint` for forever
         self._resetProgress()
+
+    def pause(self):
+        self.isPaused = not self.isPaused
+        return self
 
     def updateProgress(self):
         """
@@ -17,6 +22,8 @@ class Animatable(object):
         in the override where fit. On each repeat, `progress` resets to 0, and
         `times` gets decremented.
         """
+        if self.isPaused:
+            return False
         if self.progress == 1.0:
             if not self._repeat():
                 return False
