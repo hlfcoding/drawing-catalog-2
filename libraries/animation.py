@@ -11,7 +11,11 @@ class Animatable(object):
         self._resetProgress()
 
     def pause(self):
-        self.isPaused = not self.isPaused
+        self.isPaused = True
+        return self
+
+    def play(self):
+        self.isPaused = False
         return self
 
     def updateProgress(self):
