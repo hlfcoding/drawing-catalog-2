@@ -1,12 +1,16 @@
 # bitbucket.org/hlfcoding/hlf-processing-drawing-catalog-0
 
+from hlf.core import SubSketch
 from person import *
+from umbrella import UmbrellaTest
 
 colorMode(HSB, 1)
 shapeMode(CENTER)
 translate(width / 2, height / 2)
 noStroke()
 
-p = Person()
-p.umbrella.setColor(0, 0.4, 1)
-p.draw()
+# UmbrellaTest().activate()
+PersonTest().activate()
+
+SubSketch.active.setup()
+SubSketch.active.draw()

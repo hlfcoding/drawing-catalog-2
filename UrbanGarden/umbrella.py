@@ -1,3 +1,5 @@
+from hlf.core import SubSketch
+
 class Umbrella(object):
 
     def __init__(self):
@@ -34,3 +36,12 @@ class Umbrella(object):
         s.addName('ribs', ribs)
 
         return s
+
+class UmbrellaTest(SubSketch):
+
+    def setup(self):
+        self.subject = Umbrella()
+        self.subject.setColor(0, 0.4, 1)
+
+    def draw(self):
+        shape(self.subject.shape)
