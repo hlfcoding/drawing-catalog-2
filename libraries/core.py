@@ -11,3 +11,19 @@ class Exporting(object):
   def update(self):
     if self.isEnabled:
       saveFrame('frames/frame-####.png')
+
+class SubSketch(object):
+
+  active = None
+
+  def __init__(self):
+    pass
+
+  def activate(self):
+    SubSketch.active = self
+
+  def setup(self):
+    pass
+
+  def draw(self):
+    pass
