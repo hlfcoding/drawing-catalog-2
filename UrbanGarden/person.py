@@ -12,6 +12,7 @@ class Person(object):
 class PersonTest(SubSketch):
 
     def setup(self):
+        noStroke()
         self.subject = Person()
         self.subject.umbrella.setColor(0, 0.4, 1)
 

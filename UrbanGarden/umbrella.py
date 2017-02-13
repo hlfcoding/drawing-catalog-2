@@ -40,6 +40,7 @@ class Umbrella(object):
 class UmbrellaTest(SubSketch):
 
     def setup(self):
+        noStroke()
         self.subject = Umbrella()
         self.subject.setColor(0, 0.4, 1)
 

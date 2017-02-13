@@ -7,7 +7,6 @@ from umbrella import UmbrellaTest
 
 colorMode(HSB, 1)
 shapeMode(CENTER)
-noStroke()
 
 # UmbrellaTest().activate()
 # PersonTest().activate()
