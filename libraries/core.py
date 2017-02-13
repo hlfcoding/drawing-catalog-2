@@ -17,6 +17,7 @@ class SubSketch(object):
   active = None
 
   def __init__(self):
+    self.isCentered = True
     pass
 
   def activate(self):
@@ -27,3 +28,13 @@ class SubSketch(object):
 
   def draw(self):
     pass
+
+  def drawSketch(self):
+    if self.isCentered:
+      pushMatrix()
+      translate(width / 2, height / 2)
+
+    self.draw()
+
+    if self.isCentered:
+      popMatrix()

@@ -7,7 +7,6 @@ from umbrella import UmbrellaTest
 
 colorMode(HSB, 1)
 shapeMode(CENTER)
-translate(width / 2, height / 2)
 noStroke()
 
 # UmbrellaTest().activate()
@@ -15,4 +14,4 @@ noStroke()
 RainTest().activate()
 
 SubSketch.active.setup()
-SubSketch.active.draw()
+SubSketch.active.drawSketch()
