@@ -18,7 +18,6 @@ class SubSketch(object):
 
   def __init__(self):
     self.isCentered = True
-    pass
 
   def activate(self):
     SubSketch.active = self

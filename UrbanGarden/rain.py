@@ -9,7 +9,7 @@ class Rain(object):
         self.lengths = []
         self.positions = []
         self.distribute()
-    
+
     def distribute(self):
         ox, oy, w, h = self.bounds
         gridSize = int(sqrt(self.count))
