@@ -1,3 +1,17 @@
+class Sketch(object):
+  """
+  A structured approach to sharing global configuration (sorely missing from
+  the Processing API) as well as provide additional helpers.
+  """
+  def __init__(self):
+    self.colorScale = 1.0
+
+  def invert(self, colorValue):
+    pivot = self.colorScale / 2
+    return pivot + (pivot - colorValue)
+
+sketch = Sketch()
+
 class Exporting(object):
 
   def __init__(self, fps=24.0):
