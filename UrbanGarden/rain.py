@@ -27,11 +27,14 @@ class Rain(object):
 class RainTest(SubSketch):
 
     def setup(self):
-        stroke(0)
+        bg = color(0)
+        background(bg)
         self.isCentered = False
         self.subject = Rain(count=100, bounds=(0.0, 0.0, 100.0, 100.0))
 
     def draw(self):
+        _, maxL = self.subject.lengthBounds
         for i, (x, y) in enumerate(self.subject.positions):
             l = self.subject.lengths[i]
+            stroke(1, sq(l / maxL))
             line(x, y, x, y + l)
