@@ -1,4 +1,4 @@
-from hlf.core import SubSketch
+from hlf.core import sketch, SubSketch
 
 class Rain(object):
 
@@ -27,8 +27,9 @@ class Rain(object):
 class RainTest(SubSketch):
 
     def setup(self):
-        bg = color(0)
+        bg = 0
         background(bg)
+        self.fg = sketch.invert(bg)
         self.isCentered = False
         self.subject = Rain(count=100, bounds=(0.0, 0.0, 100.0, 100.0))
 
@@ -36,5 +37,5 @@ class RainTest(SubSketch):
         _, maxL = self.subject.lengthBounds
         for i, (x, y) in enumerate(self.subject.positions):
             l = self.subject.lengths[i]
-            stroke(1, sq(l / maxL))
+            stroke(self.fg, sq(l / maxL))
             line(x, y, x, y + l)

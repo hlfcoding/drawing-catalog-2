@@ -1,11 +1,11 @@
 # bitbucket.org/hlfcoding/hlf-processing-drawing-catalog-0
 
-from hlf.core import SubSketch
+from hlf.core import sketch, SubSketch
 from person import *
 from rain import *
 from umbrella import UmbrellaTest
 
-colorMode(HSB, 1)
+colorMode(HSB, sketch.colorScale)
 shapeMode(CENTER)
 
 # UmbrellaTest().activate()
