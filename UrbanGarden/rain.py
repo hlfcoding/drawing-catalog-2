@@ -12,17 +12,23 @@ class Rain(object):
 
     def distribute(self):
         ox, oy, w, h = self.bounds
-        gridSize = int(sqrt(self.count))
-        cellW = w / gridSize
-        cellH = h / gridSize
+        self.gridSize = int(sqrt(self.count))
+        cellW = w / self.gridSize
+        cellH = h / self.gridSize
+        self.cellSize = (cellW, cellH)
         minL, maxL = self.lengthBounds
-        r = range(0, gridSize)
+        r = range(0, self.gridSize)
         for i in r:
             for j in r:
                 self.lengths.append(minL + noise(i, j) * maxL)
-                x = ox + (i * cellW) + (noise(i, j) * -2 + 1) * cellW
+                x = self.distributeX(i, j)
                 y = oy + (j * cellH) + (noise(j, i) * -2 + 1) * cellH
                 self.positions.append((x, y))
+
+    def distributeX(self, i, j):
+        ox, _, w, _ = self.bounds
+        cellW, _ = self.cellSize
+        return ox + (i * cellW) + (noise(i, j) * -2 + 1) * cellW
 
 class RainTest(SubSketch):
 
