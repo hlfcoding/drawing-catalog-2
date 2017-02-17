@@ -5,12 +5,14 @@ from person import *
 from rain import *
 from umbrella import UmbrellaTest
 
-colorMode(HSB, sketch.colorScale)
-shapeMode(CENTER)
-
 # UmbrellaTest().activate()
 # PersonTest().activate()
 RainTest().activate()
 
-SubSketch.active.setup()
-SubSketch.active.drawSketch()
+def setup():
+    colorMode(HSB, sketch.colorScale)
+    shapeMode(CENTER)
+    SubSketch.active.setup()
+
+def draw():
+    SubSketch.active.drawSketch()
