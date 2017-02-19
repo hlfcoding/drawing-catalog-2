@@ -5,9 +5,9 @@ from person import *
 from rain import *
 from umbrella import UmbrellaTest
 
-# UmbrellaTest().activate()
+UmbrellaTest().activate()
 # PersonTest().activate()
-RainTest().activate()
+# RainTest().activate()
 
 def setup():
     colorMode(HSB, sketch.colorScale)
