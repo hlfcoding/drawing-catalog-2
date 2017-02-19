@@ -12,13 +12,24 @@ class Umbrella(object):
         self.isOpened = True
 
     @property
+    def canopy(self):
+        return self.shape.getChild('canopy')
+
+    @property
     def diameter(self):
         return self.radius * 2
 
+    @property
+    def ribs(self):
+        return self.shape.getChild('ribs').getChildren()
+
+    def rotateRib(self, rib, i):
+        rib.rotate(PI * i / self.ribCount)
+
     def setColor(self, h, s, b):
-        self.shape.getChild('canopy').setFill(color(h, s, b, 0.9))
+        self.canopy.setFill(color(h, s, b, 0.9))
         rC = color(h, s, b - 0.1)
-        for r in self.shape.getChild('ribs').getChildren():
+        for r in self.ribs:
             r.setFill(rC)
 
     def close(self):
@@ -45,7 +56,7 @@ class Umbrella(object):
             h = self.diameter / 20
             r = createShape(RECT, -self.radius * (1 + offset), -h / 2,
                             self.diameter * (1 + offset), h)
-            r.rotate(PI * i / self.ribCount)
+            self.rotateRib(r, i)
             ribs.addChild(r)
         s.addChild(ribs)
         s.addName('ribs', ribs)
@@ -77,14 +88,13 @@ class Umbrella(object):
                 self.openAnimation.reset()
         if s is None:
             return False
-        canopy = self.shape.getChild('canopy')
+        canopy = self.canopy
         canopy.resetMatrix()
         canopy.scale(s)
         s = max(0.1, s)
-        ribs = self.shape.getChild('ribs').getChildren()
-        for i, r in enumerate(ribs):
+        for i, r in enumerate(self.ribs):
             r.resetMatrix()
-            r.rotate(PI * i / self.ribCount)
+            self.rotateRib(r, i)
             r.scale(s, 1.0)
 
 class UmbrellaTest(SubSketch):
