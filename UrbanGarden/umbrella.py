@@ -63,6 +63,10 @@ class Umbrella(object):
 
         return s
 
+    def draw(self):
+        self.updateAnimations()
+        shape(self.shape)
+
     def open(self):
         if self.openAnimation.isPlaying:
             return True
@@ -98,11 +102,10 @@ class UmbrellaTest(SubSketch):
     def setup(self):
         noStroke()
         self.subject = Umbrella()
-        self.subject.setColor(0, 0.4, 1)
+        self.subject.setColor(h=0, s=0.4, b=1)
 
     def draw(self):
         if mousePressed:
             if not self.subject.close():
                 self.subject.open()
-        self.subject.updateAnimations()
-        shape(self.subject.shape)
+        self.subject.draw()

@@ -7,14 +7,14 @@ class Person(object):
         self.umbrella = Umbrella()
 
     def draw(self):
-        shape(self.umbrella.shape)
+        self.umbrella.draw()
 
 class PersonTest(SubSketch):
 
     def setup(self):
         noStroke()
         self.subject = Person()
-        self.subject.umbrella.setColor(0, 0.4, 1)
+        self.subject.umbrella.setColor(h=0, s=0.4, b=1)
 
     def draw(self):
         self.subject.draw()
