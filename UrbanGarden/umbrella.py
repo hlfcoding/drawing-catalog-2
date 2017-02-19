@@ -101,7 +101,6 @@ class UmbrellaTest(SubSketch):
         self.subject.setColor(0, 0.4, 1)
 
     def draw(self):
-        background(0.87)
         if mousePressed:
             if not self.subject.close():
                 self.subject.open()

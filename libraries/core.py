@@ -39,10 +39,16 @@ class SubSketch(object):
   def setup(self):
     pass
 
+  def setupSketch(self):
+    self.bg = 0.87
+
+    self.setup()
+
   def draw(self):
     pass
 
   def drawSketch(self):
+    background(self.bg)
     if self.isCentered:
       pushMatrix()
       translate(width / 2, height / 2)

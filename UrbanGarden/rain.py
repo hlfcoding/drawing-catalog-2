@@ -46,13 +46,12 @@ class Rain(object):
 class RainTest(SubSketch):
 
     def setup(self):
-        self.bg = 0
+        self.bg = 0.0
         self.fg = sketch.invert(self.bg)
         self.isCentered = False
         self.subject = Rain(count=100, bounds=(0.0, 0.0, 100.0, 100.0))
 
     def draw(self):
-        background(self.bg)
         self.subject.fall()
         _, maxL = self.subject.lengthBounds
         for i, (x, y) in enumerate(self.subject.positions):

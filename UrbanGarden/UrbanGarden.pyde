@@ -12,7 +12,7 @@ UmbrellaTest().activate()
 def setup():
     colorMode(HSB, sketch.colorScale)
     shapeMode(CENTER)
-    SubSketch.active.setup()
+    SubSketch.active.setupSketch()
 
 def draw():
     SubSketch.active.drawSketch()
