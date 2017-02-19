@@ -77,6 +77,10 @@ class Animation(Animatable):
         speed = 1.0 / (Animatable.fps * duration)
         Animatable.__init__(self, id, delay, speed, times)
 
+    def skipProgress(self):
+        """ Animation completes on next tick. """
+        self.progress = 1.0 - self.speed
+
     def updateProgress(self):
         if not Animatable.updateProgress(self):
             return False

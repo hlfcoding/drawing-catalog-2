@@ -32,7 +32,7 @@ class Umbrella(object):
         for r in self.ribs:
             r.setFill(rC)
 
-    def close(self):
+    def close(self, animated=True):
         if self.closeAnimation.isPlaying:
             return True
         elif self.openAnimation.isPlaying:
@@ -41,6 +41,8 @@ class Umbrella(object):
             return False
         self.isOpened = False
         self.closeAnimation.play()
+        if not animated:
+            self.closeAnimation.skipProgress()
         return True
 
     def createShape(self):
@@ -67,7 +69,7 @@ class Umbrella(object):
         self.updateAnimations()
         shape(self.shape)
 
-    def open(self):
+    def open(self, animated=True):
         if self.openAnimation.isPlaying:
             return True
         elif self.closeAnimation.isPlaying:
@@ -76,6 +78,8 @@ class Umbrella(object):
             return False
         self.isOpened = True
         self.openAnimation.play()
+        if not animated:
+            self.openAnimation.skipProgress()
         return True
 
     def updateAnimations(self):

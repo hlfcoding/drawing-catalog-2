@@ -15,6 +15,7 @@ class PersonTest(SubSketch):
         noStroke()
         self.subject = Person()
         self.subject.umbrella.setColor(h=0, s=0.4, b=1)
+        self.subject.umbrella.close(animated=False)
 
     def draw(self):
         self.subject.draw()
