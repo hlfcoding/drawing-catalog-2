@@ -6,9 +6,14 @@ class Animatable(object):
         self.id = id
         self.delay = delay  # seconds
         self.isPaused = False
+        self.maxTimes = times
         self.speed = speed  # between 0, 1
         self.times = times  # use `sys.maxint` for forever
         self._resetProgress()
+
+    @property
+    def isPlaying(self):
+        return not self.isPaused
 
     def pause(self):
         self.isPaused = True
@@ -16,6 +21,12 @@ class Animatable(object):
 
     def play(self):
         self.isPaused = False
+        return self
+
+    def reset(self):
+        self._resetProgress()
+        self.times = self.maxTimes
+        self.pause()
         return self
 
     def updateProgress(self):
