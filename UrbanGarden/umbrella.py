@@ -77,16 +77,12 @@ class Umbrella(object):
     def updateAnimations(self):
         s = None
         if self.closeAnimation.updateProgress():
-            p = self.closeAnimation.progress
-            s = 1 - p
-            if p == 1.0:
-                self.closeAnimation.reset()
+            s = 1 - self.closeAnimation.progress
+            self.closeAnimation.resetIfNeeded()
         elif self.openAnimation.updateProgress():
-            p = self.openAnimation.progress
-            s = p
-            if p == 1.0:
-                self.openAnimation.reset()
-        if s is None:
+            s = self.openAnimation.progress
+            self.openAnimation.resetIfNeeded()
+        else:
             return False
         canopy = self.canopy
         canopy.resetMatrix()

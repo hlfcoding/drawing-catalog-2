@@ -23,10 +23,11 @@ class Animatable(object):
         self.isPaused = False
         return self
 
-    def reset(self):
-        self._resetProgress()
-        self.times = self.maxTimes
-        self.pause()
+    def resetIfNeeded(self, force=False):
+        if force or self.progress == 1.0:
+            self._resetProgress()
+            self.times = self.maxTimes
+            self.pause()
         return self
 
     def updateProgress(self):
