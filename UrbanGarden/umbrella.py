@@ -73,9 +73,15 @@ class Umbrella(object):
         s.addName('canopy', canopy)
 
         ribs = createShape(GROUP)
+        h = self.diameter
+        offset = None
+        if self.edgeType is Umbrella.roundEdge:
+            offset = 0.15
+            h *= 0.05
+        elif self.edgeType is Umbrella.straightEdge:
+            h *= 0.04
+            offset = 0.05
         for i in range(0, self.ribCount):
-            offset = 0.2
-            h = self.diameter / 20
             r = createShape(RECT, -self.radius * (1 + offset), -h / 2,
                             self.diameter * (1 + offset), h)
             r.rotate(self.ribAngle(i))
