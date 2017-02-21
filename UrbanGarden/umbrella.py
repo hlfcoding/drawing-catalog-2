@@ -4,6 +4,7 @@ from hlf.core import SubSketch
 class Umbrella(object):
 
     roundEdge = 'round'
+    straightEdge = 'straight'
 
     def __init__(self, edgeType=roundEdge, radius=10.0, ribCount=4):
         self.edgeType = edgeType
@@ -30,7 +31,12 @@ class Umbrella(object):
         return PI * i / self.ribCount
 
     def setColor(self, h, s, b):
-        self.canopy.setFill(color(h, s, b, 0.9))
+        cFill = color(h, s, b, 0.9)
+        if self.edgeType is Umbrella.roundEdge:
+            self.canopy.setFill(cFill)
+        elif self.edgeType is Umbrella.straightEdge:
+            for c in self.canopy.getChildren():
+                c.setFill(cFill)
         rFill = color(h, s, b - 0.1)
         for r in self.ribs:
             r.setFill(rFill)
@@ -54,6 +60,15 @@ class Umbrella(object):
         canopy = None
         if self.edgeType is Umbrella.roundEdge:
             canopy = createShape(ELLIPSE, 0, 0, self.diameter, self.diameter)
+        elif self.edgeType is Umbrella.straightEdge:
+            canopy = createShape(GROUP)
+            t = PI / self.ribCount / 2
+            x = sin(t) * self.radius
+            y = cos(t) * self.radius
+            for i in range(0, self.ribCount * 2):
+                c = createShape(TRIANGLE, 0, 0, -x, -y, x, -y)
+                c.rotate(t + self.ribAngle(i))
+                canopy.addChild(c)
         s.addChild(canopy)
         s.addName('canopy', canopy)
 
@@ -110,7 +125,7 @@ class UmbrellaTest(SubSketch):
 
     def setup(self):
         noStroke()
-        self.subject = Umbrella(radius=25.0)
+        self.subject = Umbrella(edgeType=Umbrella.straightEdge, radius=25.0)
         self.subject.setColor(h=0, s=0.4, b=1)
 
     def draw(self):
