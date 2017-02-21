@@ -30,14 +30,14 @@ class Umbrella(object):
     def ribAngle(self, i):
         return PI * i / self.ribCount
 
-    def setColor(self, h, s, b):
-        cFill = color(h, s, b, 0.9)
+    def setColor(self, h=0, s=0, b=1, a=0.9):
+        cFill = color(h, s, b, a)
         if self.edgeType is Umbrella.roundEdge:
             self.canopy.setFill(cFill)
         elif self.edgeType is Umbrella.straightEdge:
             for c in self.canopy.getChildren():
                 c.setFill(cFill)
-        rFill = color(h, s, b - 0.1)
+        rFill = color(h, s, b) if a <= 0.5 else color(h, s, b - 0.1)
         for r in self.ribs:
             r.setFill(rFill)
 
