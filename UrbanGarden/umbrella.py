@@ -3,8 +3,8 @@ from hlf.core import SubSketch
 
 class Umbrella(object):
 
-    def __init__(self):
-        self.radius = 25.0
+    def __init__(self, radius=10.0):
+        self.radius = radius
         self.ribCount = 4
         self.shape = self.createShape()
         self.closeAnimation = Animation(id='close', duration=0.3).pause()
@@ -105,7 +105,7 @@ class UmbrellaTest(SubSketch):
 
     def setup(self):
         noStroke()
-        self.subject = Umbrella()
+        self.subject = Umbrella(radius=25.0)
         self.subject.setColor(h=0, s=0.4, b=1)
 
     def draw(self):
