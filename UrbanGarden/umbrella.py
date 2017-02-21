@@ -3,7 +3,10 @@ from hlf.core import SubSketch
 
 class Umbrella(object):
 
-    def __init__(self, radius=10.0, ribCount=4):
+    roundEdge = 'round'
+
+    def __init__(self, edgeType=roundEdge, radius=10.0, ribCount=4):
+        self.edgeType = edgeType
         self.radius = radius
         self.ribCount = ribCount
         self.shape = self.createShape()
@@ -48,7 +51,9 @@ class Umbrella(object):
     def createShape(self):
         s = createShape(GROUP)
 
-        canopy = createShape(ELLIPSE, 0, 0, self.diameter, self.diameter)
+        canopy = None
+        if self.edgeType is Umbrella.roundEdge:
+            canopy = createShape(ELLIPSE, 0, 0, self.diameter, self.diameter)
         s.addChild(canopy)
         s.addName('canopy', canopy)
 
