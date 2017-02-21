@@ -26,14 +26,14 @@ class Umbrella(object):
     def ribs(self):
         return self.shape.getChild('ribs').getChildren()
 
-    def rotateRib(self, rib, i):
-        rib.rotate(PI * i / self.ribCount)
+    def ribAngle(self, i):
+        return PI * i / self.ribCount
 
     def setColor(self, h, s, b):
         self.canopy.setFill(color(h, s, b, 0.9))
-        rC = color(h, s, b - 0.1)
+        rFill = color(h, s, b - 0.1)
         for r in self.ribs:
-            r.setFill(rC)
+            r.setFill(rFill)
 
     def close(self, animated=True):
         if self.closeAnimation.isPlaying:
@@ -63,7 +63,7 @@ class Umbrella(object):
             h = self.diameter / 20
             r = createShape(RECT, -self.radius * (1 + offset), -h / 2,
                             self.diameter * (1 + offset), h)
-            self.rotateRib(r, i)
+            r.rotate(self.ribAngle(i))
             ribs.addChild(r)
         s.addChild(ribs)
         s.addName('ribs', ribs)
@@ -103,7 +103,7 @@ class Umbrella(object):
         s = max(0.1, s)
         for i, r in enumerate(self.ribs):
             r.resetMatrix()
-            self.rotateRib(r, i)
+            r.rotate(self.ribAngle(i))
             r.scale(s, 1.0)
 
 class UmbrellaTest(SubSketch):
