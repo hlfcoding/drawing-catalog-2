@@ -3,9 +3,9 @@ from hlf.core import SubSketch
 
 class Umbrella(object):
 
-    def __init__(self, radius=10.0):
+    def __init__(self, radius=10.0, ribCount=4):
         self.radius = radius
-        self.ribCount = 4
+        self.ribCount = ribCount
         self.shape = self.createShape()
         self.closeAnimation = Animation(id='close', duration=0.3).pause()
         self.openAnimation = Animation(id='open', duration=0.3).pause()
