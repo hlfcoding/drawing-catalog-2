@@ -74,8 +74,12 @@ class Animatable(object):
 
 class Animation(Animatable):
 
-    def __init__(self, id, duration, delay=0, times=1):
+    # t: current time, b: beginning value, c: change in value, d: duration
+
+    def __init__(self, id, duration, delay=0, easing=None, times=1):
         self.duration = duration
+        self.easing = easing
+        self.frames = Animatable.fps * self.duration
         Animatable.__init__(self, id, delay, times)
 
     def skipProgress(self):
@@ -83,13 +87,20 @@ class Animation(Animatable):
         self.progress = 1.0 - self.speed()
 
     def speed(self):
-        return 1.0 / (Animatable.fps * self.duration)
+        if self.easing is None:
+            return 1.0 / self.frames
+        return self.easing(t=self.currentFrames, b=0.0, c=1.0, d=self.frames) - self.progress
 
     def updateProgress(self):
         if not Animatable.updateProgress(self):
             return False
+        self.currentFrames += 1.0
         Animatable._incrementProgress(self)
         return True
+
+    def _resetProgress(self):
+        Animatable._resetProgress(self)
+        self.currentFrames = 0.0
 
 class Sequence(Animatable):
 
