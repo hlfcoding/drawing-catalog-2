@@ -11,8 +11,10 @@ class Umbrella(object):
         self.radius = radius
         self.ribCount = ribCount
         self.shape = self.createShape()
-        self.closeAnimation = Animation(id='close', duration=0.3).pause()
-        self.openAnimation = Animation(id='open', duration=0.3).pause()
+        self.closeAnimation = Animation(id='close', duration=0.3,
+                                        easing=Animation.easeOutQuad).pause()
+        self.openAnimation = Animation(id='open', duration=0.3,
+                                       easing=Animation.easeInQuad).pause()
         self.isOpened = True
 
     @property
