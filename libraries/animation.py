@@ -2,12 +2,11 @@ class Animatable(object):
 
     fps = 60
 
-    def __init__(self, id, delay, speed, times):
+    def __init__(self, id, delay, times):
         self.id = id
         self.delay = delay  # seconds
         self.isPaused = False
         self.maxTimes = times
-        self.speed = speed  # between 0, 1
         self.times = times  # use `sys.maxint` for forever
         self._resetProgress()
 
@@ -29,6 +28,9 @@ class Animatable(object):
             self.times = self.maxTimes
             self.pause()
         return self
+
+    def speed(self):
+        return 0.0
 
     def updateProgress(self):
         """
@@ -57,7 +59,7 @@ class Animatable(object):
         return True
 
     def _incrementProgress(self):
-        self.progress += self.speed
+        self.progress += self.speed()
         self.progress = min(1.0, self.progress)
 
     def _repeat(self):
@@ -74,12 +76,14 @@ class Animation(Animatable):
 
     def __init__(self, id, duration, delay=0, times=1):
         self.duration = duration
-        speed = 1.0 / (Animatable.fps * duration)
-        Animatable.__init__(self, id, delay, speed, times)
+        Animatable.__init__(self, id, delay, times)
 
     def skipProgress(self):
         """ Animation completes on next tick. """
-        self.progress = 1.0 - self.speed
+        self.progress = 1.0 - self.speed()
+
+    def speed(self):
+        return 1.0 / (Animatable.fps * self.duration)
 
     def updateProgress(self):
         if not Animatable.updateProgress(self):
@@ -92,8 +96,10 @@ class Sequence(Animatable):
     def __init__(self, id, animations, delay=0, times=1, autoNext=True):
         self.animations = animations
         self.autoNext = autoNext
-        speed = 1.0 / len(animations)
-        Animatable.__init__(self, id, delay, speed, times)
+        Animatable.__init__(self, id, delay, times)
+
+    def speed(self):
+        return 1.0 / len(self.animations)
 
     def updateProgress(self):
         if not Animatable.updateProgress(self):
