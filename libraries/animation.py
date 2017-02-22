@@ -76,6 +76,42 @@ class Animation(Animatable):
 
     # t: current time, b: beginning value, c: change in value, d: duration
 
+    @staticmethod
+    def easeInQuad(t, b, c, d):
+        t /= d
+        return c * t * t + b
+
+    @staticmethod
+    def easeOutQuad(t, b, c, d):
+        t /= d
+        return -c * t * (t - 2) + b
+
+    @staticmethod
+    def easeInOutQuad(t, b, c, d):
+        t /= d / 2
+        if t < 1:
+            return c / 2 * t * t + b
+        t -= 1
+        return -c / 2 * (t * (t - 2) - 1) + b
+
+    @staticmethod
+    def easeInCubic(t, b, c, d):
+        t /= d
+        return c * t * t * t + b
+
+    @staticmethod
+    def easeOutCubic(t, b, c, d):
+        t = t / d - 1
+        return c * (t * t * t + 1) + b;
+
+    @staticmethod
+    def easeInOutCubic(t, b, c, d):
+        t /= d / 2
+        if t < 1:
+            return c / 2 * t * t * t + b
+        t -= 2
+        return c / 2 * (t * t * t + 2) + b
+
     def __init__(self, id, duration, delay=0, easing=None, times=1):
         self.duration = duration
         self.easing = easing
