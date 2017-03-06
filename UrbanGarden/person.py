@@ -1,6 +1,8 @@
 from hlf.core import SubSketch
 from umbrella import *
 
+# s-media-cache-ak0.pinimg.com/564x/c6/a1/96/c6a1969a6895bd4c67301338c94dc428.jpg
+
 class Person(object):
 
     blackHair = (0.05, 0.1, 0.3)
