@@ -4,6 +4,7 @@ from umbrella import *
 class Person(object):
 
     blackHair = (0.05, 0.1, 0.3)
+    whiteShirt = (0.2, 0.05, 1)
 
     def __init__(self):
         self.umbrella = Umbrella()
@@ -13,11 +14,28 @@ class Person(object):
     def head(self):
         return self.shape.getChild('head')
 
-    def setColors(self, head=blackHair):
+    @property
+    def body(self):
+        return self.shape.getChild('body')
+
+    def setColors(self, head=blackHair, body=whiteShirt):
         self.head.setFill(color(*head))
+        self.body.setFill(color(*body))
 
     def createShape(self):
         s = createShape(GROUP)
+
+        h = 10
+        w = 18
+        body = createShape()
+        body.beginShape()
+        body.vertex(-w/2, -h/2)
+        body.vertex(w/2, -h/2)
+        body.vertex(w/2, h/2)
+        body.vertex(-w/2, h/2)
+        body.endShape(CLOSE)
+        s.addChild(body)
+        s.addName('body', body)
 
         head = createShape(ELLIPSE, 0, 0, 7, 9)
         s.addChild(head)
