@@ -5,8 +5,8 @@ from person import *
 from rain import *
 from umbrella import UmbrellaTest
 
-UmbrellaTest().activate()
-# PersonTest().activate()
+# UmbrellaTest().activate()
+PersonTest().activate()
 # RainTest().activate()
 
 def setup():
