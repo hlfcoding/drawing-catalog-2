@@ -120,9 +120,12 @@ class Animation(Animatable):
 
     def skipProgress(self):
         """ Animation completes on next tick. """
-        self.progress = 1.0 - self.speed()
+        self.skipTick = 0.001
+        self.progress = 1.0 - self.skipTick
 
     def speed(self):
+        if self.skipTick is not None:
+            return self.skipTick
         if self.easing is None:
             return 1.0 / self.frames
         return self.easing(t=self.currentFrames, b=0.0, c=1.0, d=self.frames) - self.progress
@@ -137,6 +140,7 @@ class Animation(Animatable):
     def _resetProgress(self):
         Animatable._resetProgress(self)
         self.currentFrames = 0.0
+        self.skipTick = None
 
 class Sequence(Animatable):
 
