@@ -1,5 +1,5 @@
 from hlf.animation import Animation, Animator, Sequence, rotatePerSecond
-from hlf.core import Exporting 
+from hlf.core import Exporting
 
 from fx import Effects
 from layout import BranchLayout
@@ -116,7 +116,7 @@ def drawSubBranches():
         rotate(left.rotation)
         drawSegment(*left.scale)
         popMatrix()
-    
+
         pushMatrix()
         translate(*right.translation)
         rotate(right.rotation)
