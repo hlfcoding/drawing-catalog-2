@@ -14,7 +14,7 @@ class Umbrella(object):
         self.closeAnimation = Animation(id='close', duration=0.3,
                                         easing=Animation.easeOutQuad).pause()
         self.openAnimation = Animation(id='open', duration=0.3,
-                                       easing=Animation.easeInQuad).pause()
+                                       easing=Animation.easeOutQuad).pause()
         self.isOpened = True
 
     @property
