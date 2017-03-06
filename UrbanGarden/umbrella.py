@@ -1,6 +1,8 @@
 from hlf.animation import Animation
 from hlf.core import SubSketch
 
+# s-media-cache-ak0.pinimg.com/564x/26/2c/20/262c200bc8cfe952f3597a2f20630d42.jpg
+
 class Umbrella(object):
 
     roundEdge = 'round'
